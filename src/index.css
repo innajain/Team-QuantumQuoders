@@ -14,7 +14,7 @@ body {
 .container {
     background-color: #6AC3B9;
     width: 349.807px;
-    height: 534.85px;
+    /* height: 534.85px; */
     flex-shrink: 0;
     border-radius: 40px;
     box-shadow: 0 0 10px #6AC3B9;
@@ -38,7 +38,7 @@ form {
     font-weight: 400;
     line-height: normal;
     margin-top: 0px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 input, select {
@@ -68,9 +68,9 @@ input, select {
 }
 .lab{
     margin-left: 30px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     width: 64.216px;
-    height: 32.953px;
+    /* height: 32.953px; */
     flex-shrink: 0;
     color: #000;
     font-family: Abel;
