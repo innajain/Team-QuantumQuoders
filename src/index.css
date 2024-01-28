@@ -1,3 +1,95 @@
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('./assets/Desktop - 3.png'); 
+    background-position: center; 
+}
+.container {
+    background-color: #6AC3B9;
+    width: 349.807px;
+    height: 534.85px;
+    flex-shrink: 0;
+    border-radius: 40px;
+    box-shadow: 0 0 10px #6AC3B9;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+.gi{
+    width:100%;
+    align-self: center;
+    margin-top: 20px;
+}
+.na {
+    color: #000;
+    margin-left: 30px;
+    font-family: Abel;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+input, select {
+    width: 278.832px;
+    height: 37.178px;
+    margin-left: 30px;
+    border: none;
+    border-radius: 20px;
+    background: #FFF;
+    color: rgba(0, 0, 0, 0.62);
+    font-family: Abel;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 5px;
+    align-items: center;
+    text-align: center;
+}
+.sel{
+    border-radius: 10px;
+    background: #45938A;
+    width: 278.832px;
+    height: 45.627px;
+    flex-shrink: 0;
+    text-align: center  ;
+}
+.lab{
+    margin-left: 30px;
+    margin-top: 10px;
+    width: 64.216px;
+    height: 32.953px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Abel;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;  
+}
+button {
+    border-radius: 10px;
+    margin-left: 110px;
+    background: #546ADA;
+    width: 126.742px;
+    height: 45.627px;
+    flex-shrink: 0;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 12px;
+    text-align: center;
+    size: 10cap;
+}

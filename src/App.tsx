@@ -1,6 +1,4 @@
 import React from "react";
-import "./styles.css";
-import Background from "./Background";
 import bearGif from "./assets/2a0d494ad03edeb4653af8e20d8ea15f.gif";
 
 function App() {
@@ -17,69 +15,56 @@ function App() {
   }
 
   return (
-    <Background>
-      <div className="container w-[500px] h-[95%] bg-[#6AC3B9] p-10 rounded-[40px] z-10 font-sans flex flex-col items-center justify-between">
-        <div className="rounded-full overflow-hidden w-[35%] aspect-square bg-[#E99A67] p-1 my-6">
-          <img src={bearGif} alt="" className="relative bottom-[-16%]" draggable={false}/>
-        </div>
-        <form id="loginForm" className="flex flex-col w-full text-lg">
-          <label htmlFor="name" className="mb-2">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            className="mb-4 p-2 rounded-full text-center text-lg"
-            placeholder="Enter your name"
-            required
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                validateLogin();
-              }
-            }}
-          />
-
-          <label htmlFor="class">Class</label>
-          <select
-            id="class"
-            name="class"
-            className="mb-4 py-2 px-8 rounded-lg bg-[#45938A] text-center"
-            required
-            onChange={(e) => {
-              const selectedClass = e.target.value;
-              console.log("Selected Class:", selectedClass);
-              setClassValue(selectedClass);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                validateLogin();
-              }
-            }}
-          >
-            <option value="" disabled selected className="text-slate-300">
-              Select your class
-            </option>
-            {Array.from({ length: 10 }, (_, index) => (
-              <option key={index + 1} value={index + 1} >
-                Class {index + 1}
-              </option>
-            ))}
-          </select>
-
-          <button
-            type="button"
-            onClick={() => validateLogin()}
-            className="bg-[#546ADA] w-fit p-2 px-5 text-white font-bold rounded-lg self-center my-5"
-          >
-            START QUIZ
-          </button>
-        </form>
+    <div className="container flex flex-col">
+      <div
+        className="rounded-full overflow-hidden w-[40%] aspect-square bg-[#E99A67] 
+        p-1 my-6 self-center flex justify-center"
+      >
+        <img
+          src={bearGif}
+          alt="Animated GIF"
+          className="gi relative bottom-[-4%]"
+          draggable={false}
+        />
       </div>
-    </Background>
+      <form id="loginForm" className="mt-[10%]">
+        <label htmlFor="name" className="na">
+          Name:
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          placeholder="Enter your name"
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <label htmlFor="class" className="lab">
+          Class:
+        </label>
+        <select id="class" name="class" required className="sel" onChange={(e) => {
+          setClassValue(e.target.value);
+        }}>
+          <option value="" disabled selected>
+            Select your class
+          </option>
+          {Array.from({ length: 6 }, (_, i) => i + 1).map((i) => (
+            <option key={i} value={i}>Class {i}</option>
+          ))}
+        </select>
+
+        <button
+          type="button"
+          onClick={() => {
+            validateLogin();
+          }}
+          className="my-8"
+        >
+          Login
+        </button>
+      </form>
+    </div>
   );
 }
 
