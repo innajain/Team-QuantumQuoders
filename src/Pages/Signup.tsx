@@ -1,5 +1,5 @@
 import React from "react";
-import bearGif from "./assets/2a0d494ad03edeb4653af8e20d8ea15f.gif";
+import bearGif from "../assets/2a0d494ad03edeb4653af8e20d8ea15f.gif";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";

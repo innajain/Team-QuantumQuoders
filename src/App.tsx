@@ -1,6 +1,5 @@
-import React from 'react'
-import Signup from './Signup'
-import Login from './Login'
+import Signup from './Pages/Signup'
+import Login from './Pages/Login'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
