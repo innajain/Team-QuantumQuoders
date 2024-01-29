@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import bearGif from "../assets/2a0d494ad03edeb4653af8e20d8ea15f.gif";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,18 @@ function Login() {
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigator = useNavigate();
+  const [loggedIn, setLoggedIn] = React.useState(true);
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigator("/quiz");
+      }
+      setLoggedIn(false);
+    });
+    return unsubscribe;
+  }, []);
 
   function validateLogin() {
     if (name.trim() === "" || password.trim() === "") {
@@ -25,7 +37,7 @@ function Login() {
     }
   }
 
-  return (
+  return !loggedIn ? (
     <div className="container flex flex-col">
       <div
         className="rounded-full overflow-hidden w-[40%] aspect-square bg-[#E99A67] 
@@ -74,7 +86,11 @@ function Login() {
         </button>
       </form>
     </div>
-  );
+  ) : (
+    <div className="w-[100vw] h-[100vh] flex justify-center items-center text-xl font-bold">
+      Loading...
+    </div>)
+    ;
 }
 
 export default Login;
