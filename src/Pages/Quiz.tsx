@@ -1,12 +1,80 @@
 import { getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Background from "../Background";
+import McqQuestion from "./McqQuestion";
+
+export type McqQuestionType = {
+  type: "mcq";
+  question: string;
+  options: number[];
+  selectedOption?: number;
+};
+
+export type MatchingQuestionType = {
+  type: "matching";
+  question: string;
+  options1: string[];
+};
 
 function Quiz() {
   const navigator = useNavigate();
   const auth = getAuth();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const level = "easy";
+  const quizStructure = [{ type: "mcq", numberOfQuestions: 3 }];
+  const questions = quizStructure
+    .map((set) => {
+      if (set.type == "mcq") {
+        return Array.from<undefined, McqQuestionType>(
+          { length: set.numberOfQuestions },
+          () => getNewMcqQuestion()
+        );
+      }
+      return [];
+    })
+    .reduce((acc, val) => acc.concat(val), []);
+
+  function getNewMcqQuestion(): McqQuestionType {
+    return {
+      type: "mcq",
+      question: `Pick the smallest number.`,
+      options: Array.from({ length: 4 }, () => {
+        return Math.floor(
+          Math.random() *
+            10 ** (level == "easy" ? 2 : level == "medium" ? 3 : 4) *
+            (-1) ** (Math.random() > 0.5 ? 1 : 0)
+        );
+      }),
+    };
+
+  }
+  function saveSelectedOption({
+    selectedOptionIndex,
+  }: {
+    selectedOptionIndex: number;
+  }) {
+    questions[currentQuestionIndex].selectedOption = selectedOptionIndex;
+  }
+
+  function submitQuiz() {
+    navigator("/performance");
+  }
+
+  function goToNextQuestion() {
+    if (currentQuestionIndex == questions.length - 1) {
+      submitQuiz();
+      return;
+    }
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+  }
+
+  function goToPreviousQuestion() {
+    if (currentQuestionIndex == 0) {
+      return;
+    }
+    setCurrentQuestionIndex(currentQuestionIndex - 1);
+  }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -21,7 +89,18 @@ function Quiz() {
   }, [loggedIn]);
 
   return loggedIn ? (
-    <McqQuestion loggedIn={loggedIn} />
+    questions[currentQuestionIndex].type == "mcq" ? (
+      <McqQuestion
+        question={questions[currentQuestionIndex]}
+        currentQuestionIndex={currentQuestionIndex}
+        totalQuestions={questions.length}
+        saveSelectedOption={saveSelectedOption}
+        goToNextQuestion={goToNextQuestion}
+        goToPreviousQuestion={goToPreviousQuestion}
+      />
+    ) : (
+      <></>
+    )
   ) : (
     <div className="w-[100vw] h-[100vh] flex justify-center items-center text-xl font-bold">
       Loading...
@@ -29,75 +108,6 @@ function Quiz() {
   );
 }
 
-function McqQuestion({ loggedIn }: { loggedIn: boolean }) {
-  const [selectedOption, setSelectedOption] = useState(-1);
 
-  const question = {
-    type: "mcq",
-    question: "Pick the smallest number.",
-    options: ["5", "55", "25", "7"],
-  };
-
-  return loggedIn ? (
-    <Background>
-      <div className="flex flex-col justify-center items-center font-[Poppins] h-full relative rounded-[40px] overflow-hidden">
-        <div className="w-[100%] h-6 bg-[#298787] absolute top-0"></div>
-        <div className="w-[33.333%] h-6 bg-[#205D76] absolute top-0 left-0"></div>
-        <div className="flex flex-col justify-center items-center">
-          <button
-            className="absolute top-10 right-[10%] w-[20%] bg-[#5682DB] text-center text-white 
-        font-extrabold md:text-2xl p-1 shadow-xl hover:bg-[#123C91] active:bg-[#2952A6] "
-          >
-            Next
-          </button>
-          <button
-            className="absolute top-10 left-[10%] w-[25%] bg-[#5682DB] text-center text-white 
-        font-extrabold md:text-2xl p-1 shadow-xl hover:bg-[#123C91] active:bg-[#2952A6]"
-          >
-            Previous
-          </button>
-
-          <span
-            className="text-[#E74B4E] font-[1000] text-xl sm:text-3xl"
-            style={{ textShadow: "1px 0 #E74B4E" }}
-          >
-            Question (1/3)
-          </span>
-          <h1
-            className="font-[1000] sm:text-4xl text-2xl text-[#1E1E1E] my-10 text-center"
-            style={{ textShadow: "1px 0 #1E1E1E" }}
-          >
-            {question.question}
-          </h1>
-          <ul className="flex flex-col gap-4 text-white">
-            {question.options.map((option, index) => (
-              <li key={index}>
-                <button
-                  className={`sm:min-w-64 min-w-44 flex bg-[#205D76] rounded-full font-extrabold w-full gap-3 h-full p-2 px-3 sm:p-3 shadow-xl
-            ${
-              selectedOption == index
-                ? "bg-[#FBA43E] active:bg-[#F49E39]"
-                : "hover:bg-[#082E3E] active:bg-[#0D4055]"
-            }`}
-                  onClick={() => {
-                    setSelectedOption(-1);
-                    setSelectedOption(index);
-                  }}
-                >
-                  <div>{`${String.fromCharCode(97 + index)})`}</div>
-                  <div>{option}</div>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </Background>
-  ) : (
-    <div className="w-[100vw] h-[100vh] flex justify-center items-center text-xl font-bold">
-      Loading...
-    </div>
-  );
-}
 
 export default Quiz;
