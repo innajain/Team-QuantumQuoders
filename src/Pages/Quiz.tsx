@@ -40,7 +40,9 @@ function McqQuestion({ loggedIn }: { loggedIn: boolean }) {
 
   return loggedIn ? (
     <Background>
-      <div className="flex flex-col justify-center items-center font-[Poppins] h-full">
+      <div className="flex flex-col justify-center items-center font-[Poppins] h-full relative rounded-[40px] overflow-hidden">
+        <div className="w-[100%] h-6 bg-[#298787] absolute top-0"></div>
+        <div className="w-[33.333%] h-6 bg-[#205D76] absolute top-0 left-0"></div>
         <div className="flex flex-col justify-center items-center">
           <button
             className="absolute top-10 right-[10%] w-[20%] bg-[#5682DB] text-center text-white 
