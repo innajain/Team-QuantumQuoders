@@ -67,7 +67,7 @@ function BgImageAndObjects({
     ${position == "center" ? " object-cover" : ""}
     `}
       />
-      {window.innerWidth > 768 ? (
+      {screenSize.width > 768 ? (
         <div>
 
           <img
