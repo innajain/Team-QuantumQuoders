@@ -51,6 +51,8 @@ function Login() {
         />
       </div>
       <form id="loginForm" className="mt-[10%]">
+      <section className="flex flex-col gap-2">
+
         <label htmlFor="name" className="na">
           Name:
         </label>
@@ -80,10 +82,11 @@ function Login() {
           onClick={() => {
             validateLogin();
           }}
-          className="mt-8 mb-4"
+          className="btn mt-8 mb-4"
         >
           Login
         </button>
+        </section>
       </form>
     </div>
   ) : (

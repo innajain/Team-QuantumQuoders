@@ -1,3 +1,4 @@
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -79,7 +80,7 @@ input, select {
     font-weight: 400;
     line-height: normal;  
 }
-button {
+.btn {
     border-radius: 10px;
     margin-left: 110px;
     border: none;
@@ -98,6 +99,6 @@ button {
     vertical-align: middle;
     size: 10cap;
 }
-button:hover{
+.btn:hover{
     opacity: 0.7;
 }

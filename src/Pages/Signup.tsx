@@ -105,10 +105,10 @@ function Signup() {
             }}
             defaultValue={""}
           >
-            <option value="" disabled>
+            <option value="" disabled className="text-slate-300">
               Select your class
             </option>
-            {Array.from({ length: 6 }, (_, i) => i + 1).map((i) => (
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((i) => (
               <option key={i} value={i}>
                 Class {i}
               </option>
@@ -120,7 +120,7 @@ function Signup() {
           onClick={() => {
             validateSignup();
           }}
-          className="mt-8 mb-4"
+          className="btn mt-8 mb-4"
         >
           Signup
         </button>
