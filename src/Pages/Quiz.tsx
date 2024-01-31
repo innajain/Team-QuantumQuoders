@@ -1,9 +1,20 @@
 import { getAuth } from "firebase/auth";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import McqQuestion from "./McqQuestion";
 import HomePage from "./HomePage";
 import PerformanceDashboard from "./PerformanceDashboard";
+import Background from "../Background";
+
+type RetrievableStatesType = {
+  states: {
+    quizState: "not-started" | "started" | "performance-dashboard" | "review";
+    currentQuestionIndex: number;
+    level: "easy" | "medium" | "hard";
+    questions: React.MutableRefObject<McqQuestionType[] | undefined>;
+  };
+  timestamp: number;
+};
 
 export type McqQuestionType = {
   type: "mcq";
@@ -33,16 +44,30 @@ export type FillInTheBlanksQuestionType = {
 };
 
 function Quiz() {
+  const retrievedStates = useRef(getSavedStatesIfValid()).current;
+  const initialStates = useRef({
+    quizState: retrievedStates ? retrievedStates.quizState : undefined,
+    currentQuestionIndex: retrievedStates
+      ? retrievedStates.currentQuestionIndex
+      : undefined,
+    level: retrievedStates ? retrievedStates.level : undefined,
+    questions: retrievedStates ? retrievedStates.questions.current : undefined,
+  }).current
+
   const navigator = useNavigate();
   const auth = getAuth();
   const [quizState, setQuizState] = useState<
     "not-started" | "started" | "performance-dashboard" | "review"
-  >("not-started");
+  >(initialStates.quizState ?? "not-started");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [level, setLevel] = useState<"easy" | "medium" | "hard">("easy");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
+    initialStates.currentQuestionIndex ?? 0
+  );
+  const [level, setLevel] = useState<"easy" | "medium" | "hard">(
+    initialStates.level ?? "easy"
+  );
   const quizStructure: ("mcq" | "matching" | "fill")[] = ["mcq", "mcq", "mcq"];
-  const questions = useRef<McqQuestionType[]>();
+  const questions = useRef<McqQuestionType[]>(initialStates.questions ?? []);
 
   function createQuestions() {
     questions.current = quizStructure.map((item) => {
@@ -53,6 +78,7 @@ function Quiz() {
       return getNewMcqQuestion();
     });
   }
+
   function getNewMcqQuestion(): McqQuestionType {
     let options: number[] = [];
     for (let i = 0; i < 4; i++) {
@@ -111,9 +137,23 @@ function Quiz() {
 
   useEffect(() => {
     if (quizState == "review") {
-      setCurrentQuestionIndex(0)
+      setCurrentQuestionIndex(0);
     }
   }, [quizState]);
+
+  function getSavedStatesIfValid() {
+    const retrievedStates = localStorage.getItem("retrievableStates");
+
+    if (retrievedStates) {
+      const retrievedStatesObject = JSON.parse(
+        retrievedStates
+      ) as RetrievableStatesType;
+      if (Date.now() - retrievedStatesObject.timestamp > 5 * 60 * 1000) {
+        return;
+      }
+      return retrievedStatesObject.states;
+    }
+  }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -125,7 +165,21 @@ function Quiz() {
       setLoggedIn(true);
     });
     return unsubscribe;
-  }, [loggedIn]);
+  }, []);
+
+  useEffect(() => {
+    if (quizState!="not-started"){
+      return
+    }
+    const retrievableStates = {
+      states: { quizState, currentQuestionIndex, level, questions },
+      timestamp: Date.now(),
+    };
+    localStorage.setItem(
+      "retrievableStates",
+      JSON.stringify(retrievableStates)
+    );
+  }, [quizState, currentQuestionIndex, level, questions.current]);
 
   if (!loggedIn)
     return (
@@ -144,10 +198,10 @@ function Quiz() {
       />
     );
   }
-
   if (quizState == "started" || quizState == "review") {
     return questions.current![currentQuestionIndex].type == "mcq" ? (
-      <McqQuestion
+      <Background>
+        <McqQuestion
         question={questions.current![currentQuestionIndex]}
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.current!.length}
@@ -159,7 +213,8 @@ function Quiz() {
           setQuizState("not-started");
           setCurrentQuestionIndex(0);
         }}
-      />
+        />
+        </Background>
     ) : (
       <></>
     );

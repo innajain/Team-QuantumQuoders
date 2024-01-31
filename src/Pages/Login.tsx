@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import bearGif from "../assets/2a0d494ad03edeb4653af8e20d8ea15f.gif";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Background from "../Background";
 
 function Login() {
   const [name, setName] = React.useState("");
@@ -38,37 +39,42 @@ function Login() {
   }
 
   return !loggedIn ? (
-    <div className="container flex flex-col">
+    <Background>
+      <div className="w-full h-full flex justify-center items-center">
+
+    <div className="bg-[#6AC3B9] rounded-[30px] max-h-[90%] max-w-[90%] flex flex-col">
       <div
         className="rounded-full overflow-hidden w-[40%] aspect-square bg-[#E99A67] 
         p-1 my-6 self-center flex justify-center"
       >
         <img
           src={bearGif}
-          alt="Animated GIF"
+          alt="Animated GIF"  
           className="gi relative bottom-[-4%]"
           draggable={false}
         />
       </div>
       <form id="loginForm" className="mt-[10%] flex flex-col gap-2 items-center">
-          <label htmlFor="name" className="na flex flex-col gap-3">
+          <label htmlFor="name" className="na flex flex-col gap-3 sm:text-xl">
             Name:
           <input
             type="text"
             id="name"
             name="name"
+            className="sm:text-xl"
             required
             placeholder="Enter your name"
             onChange={(e) => setName(e.target.value)}
           />
             </label>
 
-          <label htmlFor="password" className="na flex flex-col gap-3">
+          <label htmlFor="password" className="na flex flex-col gap-3 sm:text-xl">
             Password:
           <input
             type="text"
             id="password"
             name="password"
+            className="sm:text-xl"
             required
             placeholder="Create a password"
             onChange={(e) => setPassword(e.target.value)}
@@ -86,6 +92,9 @@ function Login() {
             </button>
       </form>
     </div>
+    </div>
+
+    </Background>
   ) : (
     <div className="w-[100vw] h-[100vh] flex justify-center items-center text-xl font-bold">
       Loading...

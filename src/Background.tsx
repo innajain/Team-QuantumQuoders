@@ -63,7 +63,7 @@ function BgImageAndObjects({
       <img
         draggable={false}
         src={bgImage}
-        className={`rounded-[40px] z-[-2] h-[90vh] sm:max-w-[85vw] max-w-[95vw]
+        className={`rounded-[40px] z-[-2] sm:h-[90vh] sm:max-w-[85vw] max-w-[95vw] h-[95vh] w-[75vw]
     ${position == "center" ? " object-cover" : ""}
     `}
       />

@@ -33,7 +33,6 @@ form {
 .na {
     color: #000;
     font-family: Abel;
-    font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -47,7 +46,6 @@ input, select {
     background: #FFF;
     color: rgba(0, 0, 0, 0.62);
     font-family: Abel;
-    font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
