@@ -1,10 +1,9 @@
 import { getAuth } from "firebase/auth";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import McqQuestion from "./McqQuestion";
 import HomePage from "./HomePage";
 import PerformanceDashboard from "./PerformanceDashboard";
-import Background from "../Background";
 
 type RetrievableStatesType = {
   states: {
