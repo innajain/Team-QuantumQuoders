@@ -28,7 +28,7 @@ function Login() {
       const auth = getAuth();
       signInWithEmailAndPassword(auth, name + "@gmail.com", password)
         .then(() => {
-          navigator("/quiz")
+          navigator("/quiz");
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -50,50 +50,47 @@ function Login() {
           draggable={false}
         />
       </div>
-      <form id="loginForm" className="mt-[10%]">
-      <section className="flex flex-col gap-2">
+      <form id="loginForm" className="mt-[10%] flex flex-col gap-2 items-center">
+          <label htmlFor="name" className="na flex flex-col gap-3">
+            Name:
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            placeholder="Enter your name"
+            onChange={(e) => setName(e.target.value)}
+          />
+            </label>
 
-        <label htmlFor="name" className="na">
-          Name:
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          placeholder="Enter your name"
-          onChange={(e) => setName(e.target.value)}
-        />
+          <label htmlFor="password" className="na flex flex-col gap-3">
+            Password:
+          <input
+            type="text"
+            id="password"
+            name="password"
+            required
+            placeholder="Create a password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+            </label>
 
-        <label htmlFor="password" className="na">
-          Password:
-        </label>
-        <input
-          type="text"
-          id="password"
-          name="password"
-          required
-          placeholder="Create a password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button
-          type="button"
-          onClick={() => {
-            validateLogin();
-          }}
-          className="btn mt-8 mb-4"
-        >
-          Login
-        </button>
-        </section>
+            <button
+              type="button"
+              onClick={() => {
+                validateLogin();
+              }}
+              className="btn mt-8 mb-4"
+            >
+              Login
+            </button>
       </form>
     </div>
   ) : (
     <div className="w-[100vw] h-[100vh] flex justify-center items-center text-xl font-bold">
       Loading...
-    </div>)
-    ;
+    </div>
+  );
 }
 
 export default Login;

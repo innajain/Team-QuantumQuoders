@@ -9,6 +9,8 @@ function McqQuestion({
   saveSelectedOption,
   goToNextQuestion,
   goToPreviousQuestion,
+  quizState,
+  startNewQuiz,
 }: {
   question: McqQuestionType;
   currentQuestionIndex: number;
@@ -20,6 +22,8 @@ function McqQuestion({
   }) => void;
   goToNextQuestion: () => void;
   goToPreviousQuestion: () => void;
+  quizState: "started" | "review";
+  startNewQuiz: () => void;
 }) {
   const [selectedOption, setSelectedOption] = useState(-1);
 
@@ -27,33 +31,51 @@ function McqQuestion({
     setSelectedOption(-1);
   }, [currentQuestionIndex]);
 
-
   return (
     <Background>
       <div className="flex flex-col justify-center items-center font-[Poppins] h-full relative rounded-[40px] overflow-hidden">
         <div className="w-[100%] h-6 bg-[#298787] absolute top-0"></div>
         <div
-          className={`w-[${((1 / totalQuestions) * 100).toFixed(
-            3
-          )}%] h-6 bg-[#205D76] absolute top-0 left-[${(
-            (currentQuestionIndex / totalQuestions) *
-            100
-          ).toFixed(3)}%]`}
+         
+          style={{
+            width: ((1 / totalQuestions) * 100).toFixed(3).toString() + "%",
+            height: "24px",
+            backgroundColor: "#205D76",
+            position: "absolute",
+            top: "0px",
+            left:
+              ((currentQuestionIndex / totalQuestions) * 100)
+                .toFixed(3)
+                .toString() + "%",
+          }}
         ></div>
         <div className="flex flex-col justify-center items-center">
-          <button
-            className={`absolute top-10 right-[10%] w-[20%] text-center text-white 
+          {quizState != "review" ||
+          currentQuestionIndex != totalQuestions - 1 ? (
+            <button
+              className={`absolute top-10 right-[10%] w-[20%] text-center text-white 
           font-extrabold md:text-2xl p-1 shadow-xl ${
             currentQuestionIndex != totalQuestions - 1
               ? "hover:bg-[#123C91] bg-[#5682DB] active:bg-[#2952A6] "
               : "bg-green-500 hover:bg-[#56a44d] active:bg-[#61bf74]"
           }`}
-            onClick={() => {
-              goToNextQuestion();
-            }}
-          >
-            {currentQuestionIndex == totalQuestions - 1 ? "Submit" : "Next"}
-          </button>
+              onClick={() => {
+                goToNextQuestion();
+              }}
+            >
+              {currentQuestionIndex == totalQuestions - 1 ? "Submit" : "Next"}
+            </button>
+          ) : (
+            <button
+              className={`absolute top-10 right-[10%] w-[20%] text-center text-white 
+          font-extrabold md:text-2xl p-1 shadow-xl bg-green-500 hover:bg-[#56a44d] active:bg-[#61bf74]`}
+              onClick={() => {
+                startNewQuiz();
+              }}
+            >
+              Start New Quiz
+            </button>
+          )}
           {currentQuestionIndex != 0 ? (
             <button
               className={`absolute top-10 left-[10%] w-[25%] text-center text-white 
@@ -91,9 +113,15 @@ function McqQuestion({
                 <button
                   className={`sm:min-w-64 min-w-44 flex bg-[#205D76] rounded-full font-extrabold w-full gap-3 h-full p-2 px-3 sm:p-3 shadow-xl
               ${
-                selectedOption == index
-                  ? "bg-[#FBA43E] active:bg-[#F49E39]"
-                  : "hover:bg-[#082E3E] active:bg-[#0D4055]"
+                quizState == "started"
+                  ? selectedOption == index
+                    ? "bg-[#FBA43E] active:bg-[#F49E39]"
+                    : "hover:bg-[#082E3E] active:bg-[#0D4055]"
+                  : question.correctOptionIndex == index
+                  ? "bg-green-500"
+                  : question.selectedOption == index
+                  ? "bg-red-500"
+                  : ""
               }`}
                   onClick={() => {
                     setSelectedOption(index);
@@ -106,6 +134,27 @@ function McqQuestion({
               </li>
             ))}
           </ul>
+          {quizState == "review" ? (
+            <p
+              className={`${
+                question.selectedOption == undefined
+                  ? "text-gray-600"
+                  : question.selectedOption == question.correctOptionIndex
+                  ? "text-green-500"
+                  : "text-red-500"
+              }
+              font-bold top-10 relative text-2xl`}
+            >
+              {question.selectedOption != undefined
+                ? "Your answer was " +
+                  (question.correctOptionIndex == question.selectedOption
+                    ? "correct 🎉"
+                    : "incorrect 😭")
+                : "You did not answer"}
+            </p>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </Background>

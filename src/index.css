@@ -32,20 +32,16 @@ form {
 }
 .na {
     color: #000;
-    margin-left: 30px;
     font-family: Abel;
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-top: 0px;
-    /* margin-bottom: 10px; */
 }
 
 input, select {
     width: 278.832px;
     height: 37.178px;
-    margin-left: 30px;
     border: none;
     border-radius: 20px;
     background: #FFF;
@@ -55,9 +51,9 @@ input, select {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-top: 5px;
     align-items: center;
     text-align: center;
+    cursor: pointer;
 }
 .sel{
     border-radius: 10px;
@@ -82,7 +78,6 @@ input, select {
 }
 .btn {
     border-radius: 10px;
-    margin-left: 110px;
     border: none;
     font-family: poppins;
     color: white;

@@ -67,9 +67,8 @@ function Signup() {
           draggable={false}
         />
       </div>
-      <form id="loginForm">
-        <section className="flex flex-col gap-2">
-          <label htmlFor="name" className="na">
+      <form id="loginForm" className="mt-[10%] flex flex-col gap-2 items-center">
+          <label htmlFor="name" className="na flex flex-col gap-3">
             Name:
           </label>
           <input
@@ -80,7 +79,7 @@ function Signup() {
             placeholder="Enter your name"
             onChange={(e) => setName(e.target.value)}
           />
-          <label htmlFor="password" className="na">
+          <label htmlFor="password" className="na flex flex-col gap-3">
             Password:
           </label>
           <input
@@ -114,7 +113,6 @@ function Signup() {
               </option>
             ))}
           </select>
-        </section>
         <button
           type="button"
           onClick={() => {
@@ -124,6 +122,9 @@ function Signup() {
         >
           Signup
         </button>
+
+
+
       </form>
     </div>
   ) : (
