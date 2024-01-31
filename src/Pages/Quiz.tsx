@@ -200,7 +200,6 @@ function Quiz() {
   }
   if (quizState == "started" || quizState == "review") {
     return questions.current![currentQuestionIndex].type == "mcq" ? (
-      <Background>
         <McqQuestion
         question={questions.current![currentQuestionIndex]}
         currentQuestionIndex={currentQuestionIndex}
@@ -214,7 +213,6 @@ function Quiz() {
           setCurrentQuestionIndex(0);
         }}
         />
-        </Background>
     ) : (
       <></>
     );

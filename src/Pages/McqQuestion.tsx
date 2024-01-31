@@ -53,8 +53,8 @@ function McqQuestion({
           {quizState != "review" ||
           currentQuestionIndex != totalQuestions - 1 ? (
             <button
-              className={`absolute top-10 right-[10%] min-w-[25%] text-center text-white 
-          font-extrabold md:text-2xl p-1 shadow-xl ${
+              className={`absolute top-10 right-[10%] min-w-[15%] text-center text-white 
+          font-extrabold md:text-2xl p-1 px-3 shadow-xl ${
             currentQuestionIndex != totalQuestions - 1
               ? "hover:bg-[#123C91] bg-[#5682DB]"
               : "bg-green-500 hover:bg-[#56a44d]"
@@ -67,8 +67,8 @@ function McqQuestion({
             </button>
           ) : (
             <button
-              className={`absolute top-10 right-[10%] min-w-[25%] text-center text-white 
-          font-extrabold md:text-2xl p-1 shadow-xl bg-green-500 hover:bg-[#56a44d]`}
+              className={`absolute top-10 right-[10%] min-w-[15%] text-center text-white 
+          font-extrabold md:text-2xl p-1 px-3 shadow-xl bg-green-500 hover:bg-[#56a44d]`}
               onClick={() => {
                 startNewQuiz();
               }}
@@ -78,8 +78,8 @@ function McqQuestion({
           )}
           {currentQuestionIndex != 0 ? (
             <button
-              className={`absolute top-10 left-[10%] min-w-[25%] text-center text-white 
-          font-extrabold md:text-2xl p-1 shadow-xl ${
+              className={`absolute top-10 left-[10%] min-w-[15%] text-center text-white 
+          font-extrabold md:text-2xl p-1 px-3 shadow-xl ${
             currentQuestionIndex != 0
               ? "hover:bg-[#123C91] bg-[#5682DB] "
               : "bg-gray-400"
