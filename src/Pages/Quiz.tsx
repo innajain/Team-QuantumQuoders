@@ -11,6 +11,7 @@ type RetrievableStatesType = {
     currentQuestionIndex: number;
     level: "easy" | "medium" | "hard";
     questions: React.MutableRefObject<McqQuestionType[] | undefined>;
+    selectedOptions: (number | undefined)[];
   };
   timestamp: number;
 };
@@ -19,7 +20,6 @@ export type McqQuestionType = {
   type: "mcq";
   question: string;
   options: number[];
-  selectedOption?: number;
   correctOptionIndex: number;
 };
 
@@ -51,7 +51,8 @@ function Quiz() {
       : undefined,
     level: retrievedStates ? retrievedStates.level : undefined,
     questions: retrievedStates ? retrievedStates.questions.current : undefined,
-  }).current
+    selectedOptions: retrievedStates ? retrievedStates.selectedOptions : undefined,
+  }).current;
 
   const navigator = useNavigate();
   const auth = getAuth();
@@ -67,6 +68,16 @@ function Quiz() {
   );
   const quizStructure: ("mcq" | "matching" | "fill")[] = ["mcq", "mcq", "mcq"];
   const questions = useRef<McqQuestionType[]>(initialStates.questions ?? []);
+  const [selectedOptions, setSelectedOptions] = useState<
+    (number | undefined)[]
+  >(
+    initialStates.selectedOptions ?? [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]
+  );
 
   function createQuestions() {
     questions.current = quizStructure.map((item) => {
@@ -111,8 +122,11 @@ function Quiz() {
   }: {
     selectedOptionIndex: number;
   }) {
-    questions.current![currentQuestionIndex].selectedOption =
-      selectedOptionIndex;
+    setSelectedOptions((prev) => {
+      const temp = [...prev]
+      temp[currentQuestionIndex] = selectedOptionIndex;
+      return temp;
+    });
   }
 
   function submitQuiz() {
@@ -167,18 +181,24 @@ function Quiz() {
   }, []);
 
   useEffect(() => {
-    if (quizState!="not-started"){
-      return
+    if (quizState == "not-started") {
+      return;
     }
     const retrievableStates = {
-      states: { quizState, currentQuestionIndex, level, questions },
+      states: { quizState, currentQuestionIndex, level, questions, selectedOptions },
       timestamp: Date.now(),
     };
     localStorage.setItem(
       "retrievableStates",
       JSON.stringify(retrievableStates)
     );
-  }, [quizState, currentQuestionIndex, level, questions.current]);
+  }, [
+    quizState,
+    currentQuestionIndex,
+    level,
+    questions.current,
+    selectedOptions,
+  ]);
 
   if (!loggedIn)
     return (
@@ -191,7 +211,11 @@ function Quiz() {
     return (
       <HomePage
         createQuestions={createQuestions}
-        setQuizState={setQuizState}
+        starQuiz={() => {
+          createQuestions();
+          setQuizState("started");
+          setCurrentQuestionIndex(0);
+        }}
         setLevel={setLevel}
         level={level}
       />
@@ -199,7 +223,7 @@ function Quiz() {
   }
   if (quizState == "started" || quizState == "review") {
     return questions.current![currentQuestionIndex].type == "mcq" ? (
-        <McqQuestion
+      <McqQuestion
         question={questions.current![currentQuestionIndex]}
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={questions.current!.length}
@@ -209,9 +233,13 @@ function Quiz() {
         quizState={quizState}
         startNewQuiz={() => {
           setQuizState("not-started");
-          setCurrentQuestionIndex(0);
+          setCurrentQuestionIndex(-1);
+          createQuestions();
+          setSelectedOptions([undefined, undefined, undefined, undefined]);
+          localStorage.removeItem("retrievableStates");
         }}
-        />
+        selectedOption={selectedOptions[currentQuestionIndex]}
+      />
     ) : (
       <></>
     );
@@ -219,7 +247,7 @@ function Quiz() {
 
   if (quizState == "performance-dashboard") {
     return (
-      <PerformanceDashboard questions={questions} setQuizState={setQuizState} />
+      <PerformanceDashboard questions={questions} selectedOptions={selectedOptions} setQuizState={setQuizState} />
     );
   }
 }

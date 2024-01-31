@@ -3,6 +3,7 @@ import { McqQuestionType } from "./Quiz";
 function PerformanceDashboard({
   questions,
   setQuizState,
+  selectedOptions
 }: {
   questions: React.MutableRefObject<McqQuestionType[] | undefined>;
   setQuizState: React.Dispatch<
@@ -10,13 +11,14 @@ function PerformanceDashboard({
       "not-started" | "started" | "performance-dashboard" | "review"
     >
   >;
+  selectedOptions: (number | undefined)[];
 }) {
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col gap-4 justify-center items-center text-xl font-bold">
       Score:{" "}
       {
         questions.current!.filter(
-          (q) => q.selectedOption == q.correctOptionIndex
+          (q, index) => selectedOptions[index] == q.correctOptionIndex
         ).length
       }{" "}
       / {questions.current!.length}

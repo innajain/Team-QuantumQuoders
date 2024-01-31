@@ -2,14 +2,12 @@ import React from 'react'
 
 function HomePage({
     createQuestions,
-    setQuizState,
+    starQuiz,
     setLevel,
     level,
     }: {
     createQuestions: () => void;
-    setQuizState: React.Dispatch<
-        React.SetStateAction<"not-started" | "started" | "review" | "performance-dashboard">
-    >;
+    starQuiz: () => void;
     setLevel: React.Dispatch<React.SetStateAction<"easy" | "medium" | "hard">>;
     level: "easy" | "medium" | "hard";
 }) {
@@ -17,10 +15,7 @@ function HomePage({
     <div className="w-[100vw] h-[100vh] flex flex-col gap-4 justify-center items-center text-xl font-bold">
       <button
         className="btn"
-        onClick={() => {
-          createQuestions();
-          setQuizState("started");
-        }}
+        onClick={starQuiz}
       >
         Start Quiz
       </button>

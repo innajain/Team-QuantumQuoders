@@ -11,6 +11,7 @@ function McqQuestion({
   goToPreviousQuestion,
   quizState,
   startNewQuiz,
+  selectedOption
 }: {
   question: McqQuestionType;
   currentQuestionIndex: number;
@@ -24,12 +25,8 @@ function McqQuestion({
   goToPreviousQuestion: () => void;
   quizState: "started" | "review";
   startNewQuiz: () => void;
+  selectedOption: number|undefined;
 }) {
-  const [selectedOption, setSelectedOption] = useState(-1);
-
-  useEffect(() => {
-    setSelectedOption(-1);
-  }, [currentQuestionIndex]);
 
   return (
     <Background>
@@ -119,12 +116,11 @@ function McqQuestion({
                     : "hover:bg-[#082E3E] active:bg-[#0D4055]"
                   : question.correctOptionIndex == index
                   ? "bg-green-500"
-                  : question.selectedOption == index
+                  : selectedOption == index
                   ? "bg-red-500"
                   : ""
               }`}
                   onClick={() => {
-                    setSelectedOption(index);
                     saveSelectedOption({ selectedOptionIndex: index });
                   }}
                   disabled={quizState == "review"}
@@ -138,17 +134,17 @@ function McqQuestion({
           {quizState == "review" ? (
             <p
               className={`${
-                question.selectedOption == undefined
+                selectedOption == undefined
                   ? "text-gray-600"
-                  : question.selectedOption == question.correctOptionIndex
+                  : selectedOption == question.correctOptionIndex
                   ? "text-green-500"
                   : "text-red-500"
               }
               font-bold top-10 relative sm:text-2xl text-lg`}
             >
-              {question.selectedOption != undefined
+              {selectedOption != undefined
                 ? "Your answer was " +
-                  (question.correctOptionIndex == question.selectedOption
+                  (question.correctOptionIndex == selectedOption
                     ? "correct 🎉"
                     : "incorrect 😭")
                 : "You did not answer 😒"}
