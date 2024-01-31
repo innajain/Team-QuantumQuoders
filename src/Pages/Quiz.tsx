@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import McqQuestion from "./McqQuestion";
 
@@ -23,7 +23,7 @@ function Quiz() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const level = "easy";
   const quizStructure = [{ type: "mcq", numberOfQuestions: 3 }];
-  const questions = quizStructure
+  const questions = useRef(quizStructure
     .map((set) => {
       if (set.type == "mcq") {
         return Array.from<undefined, McqQuestionType>(
@@ -33,7 +33,7 @@ function Quiz() {
       }
       return [];
     })
-    .reduce((acc, val) => acc.concat(val), []);
+    .reduce((acc, val) => acc.concat(val), []));
 
   function getNewMcqQuestion(): McqQuestionType {
     return {
@@ -54,7 +54,7 @@ function Quiz() {
   }: {
     selectedOptionIndex: number;
   }) {
-    questions[currentQuestionIndex].selectedOption = selectedOptionIndex;
+    questions.current[currentQuestionIndex].selectedOption = selectedOptionIndex;
   }
 
   function submitQuiz() {
@@ -62,7 +62,7 @@ function Quiz() {
   }
 
   function goToNextQuestion() {
-    if (currentQuestionIndex == questions.length - 1) {
+    if (currentQuestionIndex == questions.current.length - 1) {
       submitQuiz();
       return;
     }
@@ -89,11 +89,11 @@ function Quiz() {
   }, [loggedIn]);
 
   return loggedIn ? (
-    questions[currentQuestionIndex].type == "mcq" ? (
+    questions.current[currentQuestionIndex].type == "mcq" ? (
       <McqQuestion
-        question={questions[currentQuestionIndex]}
+        question={questions.current[currentQuestionIndex]}
         currentQuestionIndex={currentQuestionIndex}
-        totalQuestions={questions.length}
+        totalQuestions={questions.current.length}
         saveSelectedOption={saveSelectedOption}
         goToNextQuestion={goToNextQuestion}
         goToPreviousQuestion={goToPreviousQuestion}
