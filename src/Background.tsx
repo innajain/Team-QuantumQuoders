@@ -63,9 +63,7 @@ function BgImageAndObjects({
       <img
         draggable={false}
         src={bgImage}
-        className={`rounded-[40px] z-[-2] sm:h-[90vh] sm:max-w-[85vw] max-w-[95vw] h-[95vh] w-[75vw]
-    ${position == "center" ? " object-cover" : ""}
-    `}
+        className={`rounded-[40px] z-[-2] sm:h-[90vh] sm:max-w-[85vw] max-w-[95vw] h-[95vh] sm:w-[75vw] object-cover`}
       />
       {screenSize.width > 768 ? (
         <div>
