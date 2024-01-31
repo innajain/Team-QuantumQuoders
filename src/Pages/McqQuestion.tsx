@@ -53,11 +53,11 @@ function McqQuestion({
           {quizState != "review" ||
           currentQuestionIndex != totalQuestions - 1 ? (
             <button
-              className={`absolute top-10 right-[10%] w-[20%] text-center text-white 
+              className={`absolute top-10 right-[10%] min-w-[25%] text-center text-white 
           font-extrabold md:text-2xl p-1 shadow-xl ${
             currentQuestionIndex != totalQuestions - 1
-              ? "hover:bg-[#123C91] bg-[#5682DB] active:bg-[#2952A6] "
-              : "bg-green-500 hover:bg-[#56a44d] active:bg-[#61bf74]"
+              ? "hover:bg-[#123C91] bg-[#5682DB]"
+              : "bg-green-500 hover:bg-[#56a44d]"
           }`}
               onClick={() => {
                 goToNextQuestion();
@@ -67,8 +67,8 @@ function McqQuestion({
             </button>
           ) : (
             <button
-              className={`absolute top-10 right-[10%] w-[20%] text-center text-white 
-          font-extrabold md:text-2xl p-1 shadow-xl bg-green-500 hover:bg-[#56a44d] active:bg-[#61bf74]`}
+              className={`absolute top-10 right-[10%] min-w-[25%] text-center text-white 
+          font-extrabold md:text-2xl p-1 shadow-xl bg-green-500 hover:bg-[#56a44d]`}
               onClick={() => {
                 startNewQuiz();
               }}
@@ -78,10 +78,10 @@ function McqQuestion({
           )}
           {currentQuestionIndex != 0 ? (
             <button
-              className={`absolute top-10 left-[10%] w-[25%] text-center text-white 
+              className={`absolute top-10 left-[10%] min-w-[25%] text-center text-white 
           font-extrabold md:text-2xl p-1 shadow-xl ${
             currentQuestionIndex != 0
-              ? "hover:bg-[#123C91] bg-[#5682DB] active:bg-[#2952A6] "
+              ? "hover:bg-[#123C91] bg-[#5682DB] "
               : "bg-gray-400"
           }`}
               onClick={() => {
@@ -127,6 +127,7 @@ function McqQuestion({
                     setSelectedOption(index);
                     saveSelectedOption({ selectedOptionIndex: index });
                   }}
+                  disabled={quizState == "review"}
                 >
                   <div>{`${String.fromCharCode(97 + index)})`}</div>
                   <div>{option}</div>
@@ -143,14 +144,14 @@ function McqQuestion({
                   ? "text-green-500"
                   : "text-red-500"
               }
-              font-bold top-10 relative text-2xl`}
+              font-bold top-10 relative sm:text-2xl text-lg`}
             >
               {question.selectedOption != undefined
                 ? "Your answer was " +
                   (question.correctOptionIndex == question.selectedOption
                     ? "correct 🎉"
                     : "incorrect 😭")
-                : "You did not answer"}
+                : "You did not answer 😒"}
             </p>
           ) : (
             <></>
