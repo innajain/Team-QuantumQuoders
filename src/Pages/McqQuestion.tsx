@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { McqQuestionType } from "./Quiz";
 import Background from "../Background";
 

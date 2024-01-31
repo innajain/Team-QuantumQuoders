@@ -1,7 +1,6 @@
 import React from 'react'
 
 function HomePage({
-    createQuestions,
     starQuiz,
     setLevel,
     level,
