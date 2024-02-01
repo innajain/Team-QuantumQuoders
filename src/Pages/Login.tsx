@@ -45,7 +45,8 @@ function Login() {
     setIsLoading(true);
     // Redirect to Q1
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, name + "@gmail.com", password)
+    const emailId = name.replace(" ", "") + "@gmail.com"; 
+    signInWithEmailAndPassword(auth,emailId, password)
       .then(() => {
         setIsLoading(false);
         navigator("/quiz");
