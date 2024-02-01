@@ -120,7 +120,7 @@ function Quiz() {
   function saveSelectedOption({
     selectedOptionIndex,
   }: {
-    selectedOptionIndex: number;
+    selectedOptionIndex: number|undefined;
   }) {
     setSelectedOptions((prev) => {
       const temp = [...prev]

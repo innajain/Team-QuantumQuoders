@@ -18,7 +18,7 @@ function McqQuestion({
   saveSelectedOption: ({
     selectedOptionIndex,
   }: {
-    selectedOptionIndex: number;
+    selectedOptionIndex: number|undefined;
   }) => void;
   goToNextQuestion: () => void;
   goToPreviousQuestion: () => void;
@@ -132,7 +132,7 @@ function McqQuestion({
            {quizState=="started"? <button className="absolute -bottom-20 left-[50%] -translate-x-[50%] px-5 py-2 
             bg-red-600 hover:bg-red-700 active:bg-red-800"
             onClick={() => {
-              saveSelectedOption({selectedOptionIndex:-1})
+              saveSelectedOption({selectedOptionIndex:undefined})
             }}
             >Clear</button>:<></>}
           </ul>
