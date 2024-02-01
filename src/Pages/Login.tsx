@@ -10,6 +10,14 @@ function Login() {
   const navigator = useNavigate();
   const [loggedIn, setLoggedIn] = React.useState(true);
   const auth = getAuth();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [message, setMessage] = React.useState<
+    | "Please enter a name."
+    | "Incorrect password."
+    | "Please enter a password."
+    | "User not found. Please signup."
+    | ""
+  >("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -23,62 +31,101 @@ function Login() {
 
   function validateLogin() {
     if (name.trim() === "" || password.trim() === "") {
-      alert("Please enter both name and class.");
-    } else {
-      // Redirect to Q1
-      const auth = getAuth();
-      signInWithEmailAndPassword(auth, name + "@gmail.com", password)
-        .then(() => {
-          navigator("/quiz");
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          console.log(errorMessage);
-        });
+      if (name.trim() === "") {
+        setMessage("Please enter a name.");
+        return;
+      }
+      if (password.trim() === "") {
+        setMessage("Please enter a password.");
+        return;
+      }
+      return;
     }
+    setMessage("");
+    setIsLoading(true);
+    // Redirect to Q1
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, name + "@gmail.com", password)
+      .then(() => {
+        setIsLoading(false);
+        navigator("/quiz");
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        const errorMessage = error.message;
+        if (errorMessage === "Firebase: Error (auth/user-not-found).") {
+          setMessage("User not found. Please signup.");
+          return;
+        }
+        if (errorMessage === "Firebase: Error (auth/wrong-password).") {
+          setMessage("Incorrect password.");
+          return;
+        }
+        alert(errorMessage);
+        console.log(errorMessage);
+      });
   }
 
   return !loggedIn ? (
     <Background>
-      <div className="w-full h-full flex justify-center items-center">
-
-    <div className="bg-[#6AC3B9] rounded-[30px] max-h-[90%] max-w-[90%] flex flex-col">
-      <div
-        className="rounded-full overflow-hidden w-[40%] aspect-square bg-[#E99A67] 
+      <div className="w-full h-full flex flex-col justify-center items-center">
+        <div className="bg-[#6AC3B9] rounded-[30px] max-h-[90%] max-w-[90%] flex flex-col relative">
+          <span
+            className="absolute top-0 w-full text-center -translate-y-full text-gray-600 
+        flex gap-2 justify-center sm:text-lg font-[poppins]"
+          >
+            Create new account:
+            <button
+              className="text-blue-600 underline hover:text-blue-800"
+              onClick={() => {
+                navigator("/signup");
+              }}
+            >
+              Signup
+            </button>
+          </span>
+          <div
+            className="rounded-full overflow-hidden w-[40%] aspect-square bg-[#E99A67] 
         p-1 my-6 self-center flex justify-center"
-      >
-        <img
-          src={bearGif}
-          alt="Animated GIF"  
-          className="gi relative bottom-[-4%]"
-          draggable={false}
-        />
-      </div>
-      <form id="loginForm" className="mt-[10%] flex flex-col gap-2 items-center">
-          <label htmlFor="name" className="na flex flex-col gap-3 sm:text-xl">
-            Name:
-          <input
-            type="text"
-            id="name"
-            name="name"
-            className="sm:text-xl"
-            required
-            placeholder="Enter your name"
-            onChange={(e) => setName(e.target.value)}
-          />
+          >
+            <img
+              src={bearGif}
+              alt="Animated GIF"
+              className="gi relative bottom-[-4%]"
+              draggable={false}
+            />
+          </div>
+          <form
+            id="loginForm"
+            className="mt-[10%] flex flex-col gap-2 items-center"
+          >
+            <label htmlFor="name" className="na flex flex-col gap-3 sm:text-xl">
+              Name:
+              <input
+                type="text"
+                id="name"
+                name="name"
+                className="sm:text-xl"
+                required
+                placeholder="Enter your name"
+                onChange={(e) => setName(e.target.value)}
+              />
             </label>
 
-          <label htmlFor="password" className="na flex flex-col gap-3 sm:text-xl">
-            Password:
-          <input
-            type="text"
-            id="password"
-            name="password"
-            className="sm:text-xl"
-            required
-            placeholder="Create a password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <label
+              htmlFor="password"
+              className="na flex flex-col gap-3 sm:text-xl"
+            >
+              Password:
+              <input
+                type="text"
+                id="password"
+                name="password"
+                className="sm:text-xl"
+                required
+                placeholder="Create a password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </label>
 
             <button
@@ -90,10 +137,27 @@ function Login() {
             >
               Login
             </button>
-      </form>
-    </div>
-    </div>
+          </form>
 
+          {isLoading ? (
+            <span
+              className="absolute bottom-0 w-full text-center translate-y-full 
+        text-gray-600 sm:text-xl font-bold p-3"
+            >
+              Loading...
+            </span>
+          ) : (
+            <></>
+          )}
+
+          <span
+            className="absolute bottom-0 w-full text-center translate-y-full 
+        text-red-600 sm:text-xl font-bold p-3"
+          >
+            {message}
+          </span>
+        </div>
+      </div>
     </Background>
   ) : (
     <div className="w-[100vw] h-[100vh] flex justify-center items-center text-xl font-bold">

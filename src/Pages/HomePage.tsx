@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Background from "../Background";
 import "../styles1.css";
 import easyImage from "../assets/Group 27.png";
 import hardImage from "../assets/Group 26.png";
 import mediumImage from "../assets/Group 28.png";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 function HomePage({
   starQuiz,
@@ -15,14 +17,37 @@ function HomePage({
   setLevel: React.Dispatch<React.SetStateAction<"easy" | "medium" | "hard">>;
   level: "easy" | "medium" | "hard";
 }) {
-  starQuiz
+  const user = getAuth().currentUser;
+  const [name, setName] = useState("");
+  const [classValue, setClassValue] = useState("");
+
+  useEffect(() => {
+    const db = getFirestore();
+    const userRef = doc(db, "users", user!.uid);
+    getDoc(userRef).then((data) => {
+      alert(data.data()!.name);
+      setName(data.data()!.name);
+      setClassValue(data.data()!.classValue);
+    });
+  }, []);
+
   return (
     <Background>
+      <button
+        className="absolute bg-blue-600 hover:bg-blue-800 active:bg-blue-900 p-2 px-3
+       rounded-full right-10 top-5 text-white font-[poppins] flex gap-2"
+        onClick={() => {
+          getAuth().signOut();
+        }}
+      >
+        <span className="material-symbols-outlined">logout</span>
+        <p>Signout</p>
+      </button>
       <div className="w-full h-full flex flex-col items-center justify-around">
         <div className="student-box">
-          <h2 className="text-center">STUDENT DETAILS:</h2>
-          <h3 className="text-left">Name : Arnab</h3>
-          <h3 className="text-left">Class : 3</h3>
+          <h2 className="text-center">STUDENT DETAILS</h2>
+          <h3 className="text-left">Name : {name}</h3>
+          <h3 className="text-left">Class : {classValue}</h3>
         </div>
         <div className="mainpage flex flex-col gap-10 w-full">
           <p className="">CHOOSE DIFFICULTY LEVEL :</p>
@@ -69,7 +94,10 @@ function HomePage({
             </button>
           </section>
         </div>
-        <button className="start shadow-xl hover:bg-[#4B70BC] active:bg-[#4464A4]">
+        <button
+          className="start shadow-xl hover:bg-[#4B70BC] active:bg-[#4464A4]"
+          onClick={starQuiz}
+        >
           START QUIZ!
         </button>
       </div>
