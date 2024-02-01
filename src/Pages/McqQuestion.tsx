@@ -103,7 +103,7 @@ function McqQuestion({
           >
             {question.question}
           </h1>
-          <ul className="flex flex-col gap-4 text-white">
+          <ul className="flex flex-col gap-4 text-white relative">
             {question.options.map((option, index) => (
               <li key={index}>
                 <button
@@ -129,6 +129,12 @@ function McqQuestion({
                 </button>
               </li>
             ))}
+           {quizState=="started"? <button className="absolute -bottom-20 left-[50%] -translate-x-[50%] px-5 py-2 
+            bg-red-600 hover:bg-red-700 active:bg-red-800"
+            onClick={() => {
+              saveSelectedOption({selectedOptionIndex:-1})
+            }}
+            >Clear</button>:<></>}
           </ul>
           {quizState == "review" ? (
             <p
