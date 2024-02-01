@@ -42,7 +42,7 @@
     font-weight: 600;
     line-height: normal;
     text-transform: uppercase;
-    margin-bottom: 8%;
+    /* margin-bottom: 8%; */
 }
 .mainpage button{
     cursor: pointer;
@@ -55,7 +55,7 @@
 
 .mainpage button p{
     text-transform: uppercase;
-    font-size: x-large;
+    /* font-size: x-large; */
     color: #fff;
     display: inline-block;
     /* padding: 5px; */
