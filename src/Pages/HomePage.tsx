@@ -24,11 +24,11 @@ function HomePage({
           <h3 className="text-left">Name : Arnab</h3>
           <h3 className="text-left">Class : 3</h3>
         </div>
-        <div className="mainpage flex flex-col gap-20 w-full">
+        <div className="mainpage flex flex-col gap-10 w-full">
           <p className="">CHOOSE DIFFICULTY LEVEL :</p>
-          <section className="flex w-full justify-evenly">
+          <section className="flex w-full justify-evenly sm:justify-center sm:gap-20">
             <button
-              className={`flex flex-col p-2 items-center b1 rounded-xl active:bg-opacity-50 sm:w-40 max-w-20 ${
+              className={`flex flex-col p-2 items-center b1 rounded-xl active:bg-opacity-50 sm:w-40 sm:max-w-full max-w-24 ${
                 level == "easy"
                   ? "bg-slate-500 bg-opacity-50"
                   : "hover:bg-slate-400 hover:bg-opacity-30"
@@ -38,10 +38,10 @@ function HomePage({
               }}
             >
               <img src={easyImage} draggable={false} />
-              <p className="text-lg px-4">easy</p>
+              <p className="text-lg sm:text-2xl px-4 bg-[#49D879]">easy</p>
             </button>
             <button
-              className={`flex flex-col p-2 items-center b1 rounded-xl active:bg-opacity-50 sm:w-40 w-20 ${
+              className={`flex flex-col p-2 items-center b1 rounded-xl active:bg-opacity-50 sm:w-40 sm:max-w-full max-w-24 ${
                 level == "medium"
                   ? "bg-slate-500 bg-opacity-50"
                   : "hover:bg-slate-400 hover:bg-opacity-30"
@@ -51,10 +51,11 @@ function HomePage({
               }}
             >
               <img src={mediumImage} draggable={false} />
-              <p className="text-lg px-4">medium</p>
+              <p className="text-lg sm:text-2xl px-4 bg-[#FBA43E]">medium</p>
             </button>
             <button
-              className={`flex flex-col p-2 items-center b1 rounded-xl active:bg-opacity-50 sm:w-40 w-20 ${
+              className={`flex flex-col p-2 items-center b1 rounded-xl active:bg-opacity-50 sm:w-40 sm:max-w-full 
+              max-w-24 ${
                 level == "hard"
                   ? "bg-slate-500 bg-opacity-50"
                   : "hover:bg-slate-400 hover:bg-opacity-30"
@@ -64,7 +65,7 @@ function HomePage({
               }}
             >
               <img src={hardImage} draggable={false} />
-              <p className="text-lg px-4">hard</p>
+              <p className="text-lg sm:text-2xl px-4 bg-[#E74B4E]">hard</p>
             </button>
           </section>
         </div>
