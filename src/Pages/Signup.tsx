@@ -86,7 +86,7 @@ function Signup() {
           if (errorMessage === "Firebase: Error (auth/email-already-in-use).") {
             const randomNum = Math.floor(Math.random() * 100);
             let tempEmailId =
-              name.replace(" ", "") +
+              name.replace(/ /g, "") +
               Math.floor(Math.random() * 100) +
               "@gmail.com";
             let tempAvailable = false;
