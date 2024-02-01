@@ -70,7 +70,9 @@ function Login() {
   return !loggedIn ? (
     <Background>
       <div className="w-full h-full flex flex-col justify-center items-center">
-        <div className="bg-[#6AC3B9] rounded-[30px] max-h-[90%] max-w-[90%] flex flex-col relative">
+      <div className="w-full flex justify-center relative">
+
+        <div className="bg-[#6AC3B9] rounded-[30px] flex flex-col relative">
           <span
             className="absolute top-0 w-full text-center -translate-y-full text-gray-600 
         flex gap-2 justify-center sm:text-lg font-[poppins]"
@@ -140,6 +142,7 @@ function Login() {
             </button>
           </form>
 
+        </div>
           {isLoading ? (
             <span
               className="absolute bottom-0 w-full text-center translate-y-full 

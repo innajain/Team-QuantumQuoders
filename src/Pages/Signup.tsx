@@ -1,6 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import bearGif from "../assets/2a0d494ad03edeb4653af8e20d8ea15f.gif";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  getAuth,
+} from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import Background from "../Background";
@@ -17,10 +21,11 @@ function Signup() {
     | "Please enter a name."
     | "Please enter a password."
     | "Please select a class."
-    | "User already exists. Please login"
+    | "User already exists. Try: "
     | ""
     | "Password is too short"
   >();
+  const tempName=useRef("")
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -32,7 +37,7 @@ function Signup() {
     return unsubscribe;
   }, []);
 
-  function validateSignup() {
+  function validateSignup () {
     if (
       name.trim() === "" ||
       classValue.trim() === "" ||
@@ -56,6 +61,7 @@ function Signup() {
       // Redirect to Q1
       const auth = getAuth();
       const emailId = name.replace(" ", "") + "@gmail.com";
+
       createUserWithEmailAndPassword(auth, emailId, password)
         .then((userCredential) => {
           setIsLoading(false);
@@ -70,14 +76,38 @@ function Signup() {
               navigator("/quiz");
             })
             .catch((error) => {
-              console.error("Error storing user data:", error);
+              alert(error.message);
             });
         })
-        .catch((error) => {
+        .catch(async (error) => {
+          console.log("ninoubou")
           setIsLoading(false);
           const errorMessage = error.message;
           if (errorMessage === "Firebase: Error (auth/email-already-in-use).") {
-            setMessage("User already exists. Please login");
+            const randomNum = Math.floor(Math.random() * 100);
+            let tempEmailId =
+              name.replace(" ", "") +
+              Math.floor(Math.random() * 100) +
+              "@gmail.com";
+            let tempAvailable = false;
+            let count = 0
+            while (!tempAvailable && count<2) {
+              await fetchSignInMethodsForEmail(auth, tempEmailId).then(
+                (signInMethods) => {
+                  if (signInMethods.length > 0) {
+                    console.log(signInMethods)
+                    return;
+                  }
+                  tempAvailable = true;
+                  tempName.current = name+" "+randomNum
+                }
+              ).catch((error) => {
+                console.error("Error checking email:", error);
+                setIsLoading(false);
+              });
+              count++
+            }
+            setMessage("User already exists. Try: ");
             return;
           }
           if (
@@ -95,7 +125,8 @@ function Signup() {
   return !loggedIn ? (
     <Background>
       <div className="w-full h-full flex justify-center items-center">
-        <div className="bg-[#6AC3B9] rounded-[30px] max-h-[90%] max-w-[90%] flex flex-col relative">
+        <div className="w-full flex justify-center relative">
+        <div className="bg-[#6AC3B9] rounded-[30px] flex flex-col relative w-fit">
           <span
             className="absolute top-0 w-full text-center -translate-y-full text-gray-600 
         flex gap-2 justify-center sm:text-lg font-[poppins]"
@@ -185,6 +216,7 @@ function Signup() {
               Signup
             </button>
           </form>
+        </div>
           {isLoading ? (
             <span
               className="absolute bottom-0 w-full text-center translate-y-full 
@@ -195,12 +227,13 @@ function Signup() {
           ) : (
             <></>
           )}
-          <span
+          {message?<span
             className="absolute bottom-0 w-full text-center translate-y-full 
-        text-red-600 sm:text-xl font-bold p-3"
+        text-red-600 sm:text-xl font-bold p-3 left-[50%] -translate-x-[50%]"
+        style={{textWrap:"nowrap"}}
           >
-            {message}
-          </span>
+            {`${message} ${tempName.current}`}
+          </span>:<></>}
         </div>
       </div>
     </Background>
