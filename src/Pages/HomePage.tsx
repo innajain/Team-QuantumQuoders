@@ -29,7 +29,6 @@ function HomePage({
       setClassValue(data.data()!.classValue);
     });
   }, []);
-
   return (
     <Background>
       <button
@@ -42,11 +41,14 @@ function HomePage({
         <span className="material-symbols-outlined relative left-[2px] sm:left-0">logout</span>
         {window.innerWidth > 640 ? <p>Signout</p> : <></>}
       </button>
-      <div className="w-full h-full flex flex-col items-center justify-around">
-        <div className="student-box">
+      <div className="w-full h-full flex flex-col justify-around items-center select-text">
+        <div className="student-box p-3">
           <h2 className="text-center">STUDENT DETAILS</h2>
-          <h3 className="text-left">Name : {name}</h3>
-          <h3 className="text-left">Class : {classValue}</h3>
+          <h3>Name : <span className={`${name.length>15?"block text-center":""}`}>
+            {name}
+            </span>
+            </h3>
+          <h3>Class : {classValue}</h3>
         </div>
         <div className="mainpage flex flex-col gap-10 w-full">
           <p className="">CHOOSE DIFFICULTY LEVEL :</p>
