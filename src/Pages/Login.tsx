@@ -127,7 +127,7 @@ function Login() {
                 name="password"
                 className="sm:text-xl"
                 required
-                placeholder="Create a password"
+                placeholder="Enter password"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </label>
