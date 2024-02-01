@@ -25,7 +25,6 @@ function HomePage({
     const db = getFirestore();
     const userRef = doc(db, "users", user!.uid);
     getDoc(userRef).then((data) => {
-      alert(data.data()!.name);
       setName(data.data()!.name);
       setClassValue(data.data()!.classValue);
     });
@@ -34,14 +33,14 @@ function HomePage({
   return (
     <Background>
       <button
-        className="absolute bg-blue-600 hover:bg-blue-800 active:bg-blue-900 p-2 px-3
-       rounded-full right-10 top-5 text-white font-[poppins] flex gap-2"
+        className="absolute bg-blue-600 hover:bg-blue-800 active:bg-blue-900 sm:p-2 sm:px-3 p-1
+       rounded-full right-5 sm:right-10 top-5 text-white font-[poppins] flex gap-2 justify-center"
         onClick={() => {
           getAuth().signOut();
         }}
       >
-        <span className="material-symbols-outlined">logout</span>
-        <p>Signout</p>
+        <span className="material-symbols-outlined relative left-[2px] sm:left-0">logout</span>
+        {window.innerWidth > 640 ? <p>Signout</p> : <></>}
       </button>
       <div className="w-full h-full flex flex-col items-center justify-around">
         <div className="student-box">
