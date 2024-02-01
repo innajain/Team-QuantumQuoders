@@ -60,7 +60,7 @@ function Signup() {
       setMessage("");
       // Redirect to Q1
       const auth = getAuth();
-      const emailId = name.replace(" ", "") + "@gmail.com";
+      const emailId = name.replace(/ /g, "") + "@gmail.com";
 
       createUserWithEmailAndPassword(auth, emailId, password)
         .then((userCredential) => {

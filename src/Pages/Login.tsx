@@ -45,7 +45,8 @@ function Login() {
     setIsLoading(true);
     // Redirect to Q1
     const auth = getAuth();
-    const emailId = name.replace(" ", "") + "@gmail.com"; 
+    const emailId = name.replace(/ /g, "") + "@gmail.com";
+    console.log(emailId)
     signInWithEmailAndPassword(auth,emailId, password)
       .then(() => {
         setIsLoading(false);
