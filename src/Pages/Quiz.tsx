@@ -9,12 +9,12 @@ import {
   FillInTheBlanksQuestionType,
   MatchingQuestionType,
   McqQuestionType,
-  getNewMatchingQuestion,
-  getNewMcqQuestion,
+  createQuestions,
   getSavedStatesIfValid,
 } from "../utils/quiz";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { QuizContext } from "../utils/QuizContext";
+import FillInTheBlanksQuestion from "./FillInTheBlanksQuestion";
 
 function Quiz() {
   const retrievedStates = getSavedStatesIfValid();
@@ -29,7 +29,6 @@ function Quiz() {
       ? retrievedStates.selectedOptions
       : undefined,
   };
-
   const navigator = useNavigate();
   const auth = getAuth();
   const [quizState, setQuizState] = useState<
@@ -42,31 +41,16 @@ function Quiz() {
   const [level, setLevel] = useState<"easy" | "medium" | "hard">(
     initialStates.level ?? "easy"
   );
-  const quizStructure: ("mcq" | "matching" | "fill")[] = [
-    "mcq",
-    "matching",
-    "mcq",
-  ];
+  const [quizStructure, setQuizStructure] = useState({
+    mcq: 3,
+    matching: 3,
+    fill: 3,
+  });
   const [questions, setQuestions] = useState<
     (McqQuestionType | MatchingQuestionType | FillInTheBlanksQuestionType)[]
   >(initialStates.questions ?? []);
   const [name, setName] = useState("");
   const [classValue, setClassValue] = useState("");
-
-  function createQuestions() {
-    setQuestions(
-      quizStructure.map((item) => {
-        if (item == "mcq") {
-          return getNewMcqQuestion(level);
-        }
-        if (item == "matching") {
-          return getNewMatchingQuestion(level);
-        }
-        // temporarily
-        return getNewMcqQuestion(level);
-      })
-    );
-  }
 
   function saveMcqOption({
     selectedOptionIndex,
@@ -100,7 +84,19 @@ function Quiz() {
   }
 
   function startQuiz() {
-    createQuestions();
+    if (
+      quizStructure.mcq == 0 &&
+      quizStructure.matching == 0 &&
+      quizStructure.fill == 0
+    ) {
+      alert("Please select atleast one question type");
+      return;
+    }
+    createQuestions({
+      level,
+      quizStructure,
+      setQuestions,
+    });
     setQuizState("started");
     setCurrentQuestionIndex(0);
   }
@@ -108,7 +104,6 @@ function Quiz() {
   function goToHomePage() {
     setQuizState("not-started");
     setCurrentQuestionIndex(-1);
-    createQuestions();
     localStorage.removeItem("retrievableStates");
   }
 
@@ -120,16 +115,18 @@ function Quiz() {
     answerIndex: number;
   }) {
     setQuestions((prev) => {
-      (prev[currentQuestionIndex] as MatchingQuestionType).subQuestions.forEach((subQ, index) => {
-        if (index == questionIndex){
-          subQ.selectedAnswerIndex = answerIndex;
-          return
+      (prev[currentQuestionIndex] as MatchingQuestionType).subQuestions.forEach(
+        (subQ, index) => {
+          if (index == questionIndex) {
+            subQ.selectedAnswerIndex = answerIndex;
+            return;
+          }
+          if (subQ.selectedAnswerIndex == answerIndex) {
+            subQ.selectedAnswerIndex = undefined;
+            return;
+          }
         }
-        if (subQ.selectedAnswerIndex == answerIndex) {
-          subQ.selectedAnswerIndex = undefined;
-          return
-        }
-      })
+      );
       return [...prev];
     });
   }
@@ -194,7 +191,7 @@ function Quiz() {
         return <MatchingQuestion />;
       }
 
-      return <></>;
+      return <FillInTheBlanksQuestion />;
     }
     if (quizState == "performance-dashboard") {
       return <PerformanceDashboard />;
@@ -202,27 +199,30 @@ function Quiz() {
 
     return <></>;
   }
-  return <QuizContext.Provider
-    value={{
-      name,
-      classValue,
-      createQuestions,
-      startQuiz,
-      setLevel,
-      level,
-      questions,
-      currentQuestionIndex,
-      saveMcqOption,
-      goToNextQuestion,
-      goToPreviousQuestion,
-      quizState,
-      goToHomePage,
-      matchOption,
-      setQuizState,
-      setQuestions,
-    }}
-  >
-    {getRelevantScreen()}
-  </QuizContext.Provider>;
+  return (
+    <QuizContext.Provider
+      value={{
+        name,
+        classValue,
+        startQuiz,
+        setLevel,
+        level,
+        questions,
+        currentQuestionIndex,
+        saveMcqOption,
+        goToNextQuestion,
+        goToPreviousQuestion,
+        quizState,
+        goToHomePage,
+        matchOption,
+        setQuizState,
+        setQuestions,
+        setQuizStructure,
+        quizStructure,
+      }}
+    >
+      {getRelevantScreen()}
+    </QuizContext.Provider>
+  );
 }
 export default Quiz;

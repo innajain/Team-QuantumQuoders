@@ -4,7 +4,6 @@ import { FillInTheBlanksQuestionType, MatchingQuestionType, McqQuestionType } fr
 export const QuizContext = createContext<{
     name: string;
     classValue: string;
-    createQuestions: () => void;
     startQuiz: () => void;
     setLevel: (level: "easy" | "medium" | "hard") => void;
     level: "easy" | "medium" | "hard";
@@ -44,21 +43,8 @@ export const QuizContext = createContext<{
         )[]
       >
     >;
-  }>({
-    name: "",
-    classValue: "",
-    createQuestions: () => {},
-    startQuiz: () => {},
-    setLevel: () => {},
-    level: "easy",
-    questions: [],
-    currentQuestionIndex: 0,
-    saveMcqOption: () => {},
-    goToNextQuestion: () => {},
-    goToPreviousQuestion: () => {},
-    quizState: "not-started",
-    goToHomePage: () => {},
-    matchOption: () => {},
-    setQuizState: () => {},
-    setQuestions: () => {},
-  });
+    setQuizStructure: React.Dispatch<
+      React.SetStateAction<{ mcq: number; matching: number; fill: number }>
+    >;
+    quizStructure: { mcq: number; matching: number; fill: number };
+  }|undefined>(undefined);

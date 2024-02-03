@@ -7,7 +7,7 @@ export function ClearButton({
     handleClear: () => void;
 
 }) {
-    const {quizState} = useContext(QuizContext);
+    const {quizState} = useContext(QuizContext)!;
     return (
         <>
             {quizState == "started" ? (

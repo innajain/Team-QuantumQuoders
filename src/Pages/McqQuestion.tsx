@@ -8,7 +8,7 @@ import { ClearButton } from "./MatchingQuestions components/ClearButton";
 
 function McqQuestion() {
   const { currentQuestionIndex, questions, saveMcqOption, quizState } =
-    useContext(QuizContext);
+    useContext(QuizContext)!;
 
   const question = questions[currentQuestionIndex] as McqQuestionType;
   const totalQuestions = questions.length;
@@ -21,7 +21,7 @@ function McqQuestion() {
       >
         <TopBar />
         <NavigationButtons />
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col items-center justify-between w-[340px] sm:w-[465px] text-white min-h-72">
           <span
             className="text-[#E74B4E] font-[1000] text-xl sm:text-3xl"
             style={{ textShadow: "1px 0 #E74B4E" }}

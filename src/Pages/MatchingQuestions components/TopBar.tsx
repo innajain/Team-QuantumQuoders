@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { QuizContext } from "../../utils/QuizContext";
 export function TopBar() {
-    const {currentQuestionIndex, questions} = useContext(QuizContext);
+    const {currentQuestionIndex, questions} = useContext(QuizContext)!;
     const totalQuestions = questions.length;
     return (
         <>

@@ -14,7 +14,7 @@ export function AnswersSection({
   setCurrSelQues: (index: number | undefined) => void;
 }) {
   const { currentQuestionIndex, questions, matchOption } =
-    useContext(QuizContext);
+    useContext(QuizContext)!;
   const question = questions[currentQuestionIndex] as MatchingQuestionType;
   const colors = ["FF598F", "E9ED0B", "00BFAF", "E74B4E"];
 
@@ -35,7 +35,7 @@ export function AnswersSection({
           return (
             <button
               key={index}
-              className={`relative py-2 px-5 sm:min-w-40 min-w-32`}
+              className={`relative py-2 px-5 sm:min-w-40 min-w-32 font-bold`}
               style={{
                 backgroundColor: matchingQuestionIndex == -1 ? "rgb(107 114 128)": "#"+colors[matchingQuestionIndex],
               }}

@@ -10,7 +10,7 @@ import { MatchingQuestionType } from "../utils/quiz";
 
 function MatchingQuestion() {
   const { currentQuestionIndex, questions, setQuestions } =
-    useContext(QuizContext);
+    useContext(QuizContext)!;
   const totalQuestions = questions.length;
   const [currSelQues, setCurrSelQues] = useState<number | undefined>(undefined);
   const [currSelAns, setCurrSelAns] = useState<number | undefined>(undefined);

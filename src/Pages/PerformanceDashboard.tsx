@@ -3,11 +3,11 @@ import mascotImage from "../assets/Group 6.png";
 import booksImage from "../assets/image 13.png";
 import smileysImage from "../assets/image 14.png";
 import "../index.css";
-import { useContext} from "react";
+import { useContext } from "react";
 import { QuizContext } from "../utils/QuizContext";
 
 function PerformanceDashboard() {
-  const { name, classValue, questions, setQuizState } = useContext(QuizContext);
+  const { name, classValue, questions, setQuizState } = useContext(QuizContext)!;
 
   let totalPercentage =
     (questions!.reduce((acc, q) => {
@@ -26,14 +26,41 @@ function PerformanceDashboard() {
           : acc,
       0
     ) /
-      questions.length) *
+    questions.filter(q=>q.type=="mcq").length) *
     100;
-  let fillInTheBlanksPercentage = 0;
-  let matchingPercentage = 0;
+  let fillInTheBlanksPercentage =
+    (questions.reduce(
+      (acc, q) =>
+        q.type == "fill" &&
+        q.subQuestions.some((qq) => qq.enteredAnswer != qq.correctAnswer) ==
+          false
+          ? acc + 1
+          : acc,
+      0
+    ) /
+    questions.filter(q=>q.type=="fill").length) *
+    100;
+  let matchingPercentage =
+    (questions.reduce(
+      (acc, q) =>
+        q.type == "matching" &&
+        q.subQuestions.some(
+          (qq) => qq.selectedAnswerIndex != qq.correctOptionIndex
+        ) == false
+          ? acc + 1
+          : acc,
+      0
+    ) /
+      questions.filter(q=>q.type=="matching").length) *
+    100;
   if (totalPercentage % 1 != 0)
     totalPercentage = parseFloat(totalPercentage.toFixed(2));
   if (mcqPercentage % 1 != 0)
     mcqPercentage = parseFloat(mcqPercentage.toFixed(2));
+  if (matchingPercentage % 1 != 0)
+    matchingPercentage = parseFloat(matchingPercentage.toFixed(2));
+  if (fillInTheBlanksPercentage % 1 != 0)
+    fillInTheBlanksPercentage = parseFloat(fillInTheBlanksPercentage.toFixed(2));
   const performance =
     totalPercentage >= 80
       ? 4

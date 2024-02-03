@@ -9,7 +9,7 @@ export function NavigationButtons() {
     goToPreviousQuestion,
     quizState,
     goToHomePage,
-  } = useContext(QuizContext);
+  } = useContext(QuizContext)!;
 const totalQuestions = questions.length;
   return (
     <>
