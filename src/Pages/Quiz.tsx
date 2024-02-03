@@ -247,7 +247,9 @@ function Quiz() {
 
   if (quizState == "performance-dashboard") {
     return (
-      <PerformanceDashboard questions={questions} selectedOptions={selectedOptions} setQuizState={setQuizState} />
+      <PerformanceDashboard questions={questions} selectedOptions={selectedOptions} gotToReview={() => {
+        setQuizState("review");
+      }} />
     );
   }
 }
