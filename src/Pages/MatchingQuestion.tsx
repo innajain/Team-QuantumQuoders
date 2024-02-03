@@ -102,7 +102,7 @@ function MatchingQuestion() {
               ))}
               {Array.from({ length: 4 }).map((_, index) => (
                 <div
-                  className="rounded-full bg-[#E9ED0B] w-3 aspect-square absolute 
+                  className="rounded-full bg-[#5682DB] w-3 aspect-square absolute 
                 top-[60px] right-2"
                   style={{
                     top: topDistance + index * intervalDistance,
