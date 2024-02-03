@@ -14,7 +14,7 @@ function Signup() {
   const [password, setPassword] = React.useState("");
   const [classValue, setClassValue] = React.useState("");
   const navigator = useNavigate();
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const auth = getAuth();
   const [isLoading, setIsLoading] = React.useState(false);
   const [message, setMessage] = React.useState<
@@ -25,7 +25,7 @@ function Signup() {
     | ""
     | "Password is too short"
   >();
-  const tempName=useRef("")
+  const tempName = useRef("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -37,7 +37,7 @@ function Signup() {
     return unsubscribe;
   }, []);
 
-  function validateSignup () {
+  function validateSignup() {
     if (
       name.trim() === "" ||
       classValue.trim() === "" ||
@@ -80,7 +80,6 @@ function Signup() {
             });
         })
         .catch(async (error) => {
-          console.log("ninoubou")
           setIsLoading(false);
           const errorMessage = error.message;
           if (errorMessage === "Firebase: Error (auth/email-already-in-use).") {
@@ -90,22 +89,21 @@ function Signup() {
               Math.floor(Math.random() * 100) +
               "@gmail.com";
             let tempAvailable = false;
-            let count = 0
-            while (!tempAvailable && count<2) {
-              await fetchSignInMethodsForEmail(auth, tempEmailId).then(
-                (signInMethods) => {
+            let count = 0;
+            while (!tempAvailable && count < 2) {
+              await fetchSignInMethodsForEmail(auth, tempEmailId)
+                .then((signInMethods) => {
                   if (signInMethods.length > 0) {
-                    console.log(signInMethods)
                     return;
                   }
                   tempAvailable = true;
-                  tempName.current = name+" "+randomNum
-                }
-              ).catch((error) => {
-                console.error("Error checking email:", error);
-                setIsLoading(false);
-              });
-              count++
+                  tempName.current = name + " " + randomNum;
+                })
+                .catch((error) => {
+                  console.error("Error checking email:", error);
+                  setIsLoading(false);
+                });
+              count++;
             }
             setMessage("User already exists. Try: ");
             return;
@@ -121,102 +119,104 @@ function Signup() {
         });
     }
   }
-
   return !loggedIn ? (
     <Background>
       <div className="w-full h-full flex justify-center items-center">
-        <div className="w-full flex justify-center relative">
-        <div className="bg-[#6AC3B9] rounded-[30px] flex flex-col relative w-fit">
-          <span
-            className="absolute top-0 w-full text-center -translate-y-full text-gray-600 
+        <div className="w-full flex justify-center relative sm:h-[85%] items-center">
+          <div className="bg-[#6AC3B9] rounded-[30px] flex flex-col relative w-fit h-full justify-around">
+            <span
+              className="absolute top-0 w-full text-center -translate-y-full text-gray-600 
         flex gap-2 justify-center sm:text-lg font-[poppins]"
-          >
-            Already have an account:
-            <button
-              className="text-blue-600 underline hover:text-blue-800"
-              onClick={() => {
-                navigator("/login");
-              }}
             >
-              Login
-            </button>
-          </span>
-          <div
-            className="rounded-full overflow-hidden w-[40%] aspect-square bg-[#E99A67] 
-        p-1 my-6 self-center flex justify-center"
-          >
-            <img
-              src={bearGif}
-              alt="Animated GIF"
-              className="gi relative bottom-[-4%]"
-              draggable={false}
-            />
-          </div>
-          <form
-            id="loginForm"
-            className="mt-[10%] flex flex-col gap-2 items-center"
-          >
-            <label htmlFor="name" className="na flex flex-col gap-3 sm:text-xl">
-              Name:
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className="sm:text-xl"
-              required
-              placeholder="Enter your name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label
-              htmlFor="password"
-              className="na flex flex-col gap-3 sm:text-xl"
+              Already have an account:
+              <button
+                className="text-blue-600 underline hover:text-blue-800"
+                onClick={() => {
+                  navigator("/login");
+                }}
+              >
+                Login
+              </button>
+            </span>
+            <div
+              className="rounded-full overflow-hidden w-[40%] aspect-square bg-[#E99A67] 
+        p-1 my-6 self-center flex justify-center "
             >
-              Password:
-            </label>
-            <input
-              type="text"
-              id="password"
-              name="password"
-              className="sm:text-xl"
-              required
-              placeholder="Create a password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+              <img
+                src={bearGif}
+                alt="Animated GIF"
+                className="gi relative bottom-[-4%]"
+                draggable={false}
+              />
+            </div>
+            <form
+              id="loginForm"
+              className="flex flex-col gap-2 items-center"
+            >
+              <label
+                htmlFor="name"
+                className="na flex flex-col gap-3 sm:text-xl"
+              >
+                Name:
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                className="sm:text-xl"
+                required
+                placeholder="Enter your name"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <label
+                htmlFor="password"
+                className="na flex flex-col gap-3 sm:text-xl"
+              >
+                Password:
+              </label>
+              <input
+                type="text"
+                id="password"
+                name="password"
+                className="sm:text-xl"
+                required
+                placeholder="Create a password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
-            <label htmlFor="class" className="lab">
-              Class:
-            </label>
-            <select
-              id="class"
-              name="class"
-              required
-              className="sel sm:text-xl"
-              onChange={(e) => {
-                setClassValue(e.target.value);
-              }}
-              defaultValue={""}
-            >
-              <option value="" disabled className="text-slate-300 sm:text-xl">
-                Select your class
-              </option>
-              {Array.from({ length: 10 }, (_, i) => i + 1).map((i) => (
-                <option key={i} value={i}>
-                  Class {i}
+              <label htmlFor="class" className="lab">
+                Class:
+              </label>
+              <select
+                id="class"
+                name="class"
+                required
+                className="sel sm:text-xl"
+                onChange={(e) => {
+                  setClassValue(e.target.value);
+                }}
+                defaultValue={""}
+              >
+                <option value="" disabled className="text-slate-300 sm:text-xl">
+                  Select your class
                 </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              onClick={() => {
-                validateSignup();
-              }}
-              className="btn mt-8 mb-4"
-            >
-              Signup
-            </button>
-          </form>
-        </div>
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((i) => (
+                  <option key={i} value={i}>
+                    Class {i}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => {
+                  validateSignup();
+                }}
+                className="btn mt-8 mb-4"
+              >
+                Signup
+              </button>
+            </form>
+          </div>
           {isLoading ? (
             <span
               className="absolute bottom-0 w-full text-center translate-y-full 
@@ -227,13 +227,17 @@ function Signup() {
           ) : (
             <></>
           )}
-          {message?<span
-            className="absolute bottom-0 w-full text-center translate-y-full 
+          {message ? (
+            <span
+              className="absolute bottom-0 w-full text-center translate-y-full 
         text-red-600 sm:text-xl font-bold p-3 left-[50%] -translate-x-[50%]"
-        style={{textWrap:"nowrap"}}
-          >
-            {`${message} ${tempName.current}`}
-          </span>:<></>}
+              style={{ textWrap: "nowrap" }}
+            >
+              {`${message} ${tempName.current}`}
+            </span>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </Background>

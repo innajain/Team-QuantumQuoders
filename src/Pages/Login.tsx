@@ -8,7 +8,7 @@ function Login() {
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigator = useNavigate();
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const auth = getAuth();
   const [isLoading, setIsLoading] = React.useState(false);
   const [message, setMessage] = React.useState<
@@ -71,9 +71,9 @@ function Login() {
   return !loggedIn ? (
     <Background>
       <div className="w-full h-full flex flex-col justify-center items-center">
-      <div className="w-full flex justify-center relative">
+      <div className="w-full flex justify-center relative sm:h-[75%] items-center">
 
-        <div className="bg-[#6AC3B9] rounded-[30px] flex flex-col relative">
+      <div className="bg-[#6AC3B9] rounded-[30px] flex flex-col relative w-fit h-full justify-around">
           <span
             className="absolute top-0 w-full text-center -translate-y-full text-gray-600 
         flex gap-2 justify-center sm:text-lg font-[poppins]"
