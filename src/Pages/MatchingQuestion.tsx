@@ -1,5 +1,5 @@
 import Background from "../Background";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { TopBar } from "./MatchingQuestions components/TopBar";
 import { NavigationButtons } from "./MatchingQuestions components/NavigationButtons";
 import { AnswersSection } from "./MatchingQuestions components/AnswersSection";
@@ -76,7 +76,7 @@ function MatchingQuestion() {
               currSelQues={currSelQues}
             />
             <div className="w-full relative" ref={drawingAreaRef}>
-              {lines.map((line, index) => (
+              {lines.map((line) => (
                 <div
                   key={line.color}
                   style={{
