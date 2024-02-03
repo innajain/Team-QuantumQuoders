@@ -9,7 +9,7 @@ import image5 from "./assets/image 15.png";
 
 function Background({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-[100vw] overflow-hidden flex justify-center">
+    <div className="w-[100vw] overflow-hidden flex justify-center select-none">
       <div className="relative">
         <BgImageAndObjects position="left" />
         <BgImageAndObjects position="center">
