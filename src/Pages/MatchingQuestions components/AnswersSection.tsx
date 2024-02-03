@@ -35,11 +35,10 @@ export function AnswersSection({
           return (
             <button
               key={index}
-              className={`relative py-2 px-5 min-w-40 ${
-                matchingQuestionIndex == -1
-                  ? "bg-gray-500"
-                  : "bg-[#"+colors[matchingQuestionIndex]+"]"
-              }`}
+              className={`relative py-2 px-5 sm:min-w-40 min-w-32`}
+              style={{
+                backgroundColor: matchingQuestionIndex == -1 ? "rgb(107 114 128)": "#"+colors[matchingQuestionIndex],
+              }}
               onClick={() => {
                 if (currSelQues != undefined) {
                   matchOption({
