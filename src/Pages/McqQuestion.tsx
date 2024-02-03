@@ -1,96 +1,27 @@
-import { McqQuestionType } from "./Quiz";
+import { McqQuestionType } from "../utils/quiz";
 import Background from "../Background";
+import { NavigationButtons } from "./MatchingQuestions components/NavigationButtons";
+import { TopBar } from "./MatchingQuestions components/TopBar";
+import { useContext } from "react";
+import { QuizContext } from "../utils/QuizContext";
+import { ClearButton } from "./MatchingQuestions components/ClearButton";
 
-function McqQuestion({
-  question,
-  currentQuestionIndex,
-  totalQuestions,
-  saveSelectedOption,
-  goToNextQuestion,
-  goToPreviousQuestion,
-  quizState,
-  startNewQuiz,
-  selectedOption
-}: {
-  question: McqQuestionType;
-  currentQuestionIndex: number;
-  totalQuestions: number;
-  saveSelectedOption: ({
-    selectedOptionIndex,
-  }: {
-    selectedOptionIndex: number|undefined;
-  }) => void;
-  goToNextQuestion: () => void;
-  goToPreviousQuestion: () => void;
-  quizState: "started" | "review";
-  startNewQuiz: () => void;
-  selectedOption: number|undefined;
-}) {
+function McqQuestion() {
+  const { currentQuestionIndex, questions, saveMcqOption, quizState } =
+    useContext(QuizContext);
+
+  const question = questions[currentQuestionIndex] as McqQuestionType;
+  const totalQuestions = questions.length;
 
   return (
     <Background>
-      <div className="flex flex-col justify-center items-center font-[Poppins] h-full relative rounded-[40px] overflow-hidden">
-        <div className="w-[100%] h-6 bg-[#298787] absolute top-0"></div>
-        <div
-         
-          style={{
-            width: ((1 / totalQuestions) * 100).toFixed(3).toString() + "%",
-            height: "24px",
-            backgroundColor: "#205D76",
-            position: "absolute",
-            top: "0px",
-            left:
-              ((currentQuestionIndex / totalQuestions) * 100)
-                .toFixed(3)
-                .toString() + "%",
-          }}
-        ></div>
+      <div
+        className="flex flex-col justify-center items-center font-[Poppins] h-full 
+      relative rounded-[40px] overflow-hidden"
+      >
+        <TopBar />
+        <NavigationButtons />
         <div className="flex flex-col justify-center items-center">
-          {quizState != "review" ||
-          currentQuestionIndex != totalQuestions - 1 ? (
-            <button
-              className={`absolute top-10 right-[10%] min-w-[15%] text-center text-white 
-          font-extrabold md:text-2xl p-1 px-3 shadow-xl ${
-            currentQuestionIndex != totalQuestions - 1
-              ? "hover:bg-[#123C91] bg-[#5682DB]"
-              : "bg-green-500 hover:bg-[#56a44d]"
-          }`}
-              onClick={() => {
-                goToNextQuestion();
-              }}
-            >
-              {currentQuestionIndex == totalQuestions - 1 ? "Submit" : "Next"}
-            </button>
-          ) : (
-            <button
-              className={`absolute top-10 right-[10%] min-w-[15%] text-center text-white 
-          font-extrabold md:text-2xl p-1 px-3 shadow-xl bg-green-500 hover:bg-[#56a44d]`}
-              onClick={() => {
-                startNewQuiz();
-              }}
-            >
-              Start New Quiz
-            </button>
-          )}
-          {currentQuestionIndex != 0 ? (
-            <button
-              className={`absolute top-10 left-[10%] min-w-[15%] text-center text-white 
-          font-extrabold md:text-2xl p-1 px-3 shadow-xl ${
-            currentQuestionIndex != 0
-              ? "hover:bg-[#123C91] bg-[#5682DB] "
-              : "bg-gray-400"
-          }`}
-              onClick={() => {
-                goToPreviousQuestion();
-              }}
-              disabled={currentQuestionIndex == 0}
-            >
-              Previous
-            </button>
-          ) : (
-            <></>
-          )}
-
           <span
             className="text-[#E74B4E] font-[1000] text-xl sm:text-3xl"
             style={{ textShadow: "1px 0 #E74B4E" }}
@@ -103,63 +34,83 @@ function McqQuestion({
           >
             {question.question}
           </h1>
-          <ul className="flex flex-col gap-4 text-white relative">
-            {question.options.map((option, index) => (
-              <li key={index}>
-                <button
-                  className={`sm:min-w-64 min-w-44 flex bg-[#205D76] rounded-full font-extrabold w-full gap-3 h-full p-2 px-3 sm:p-3 shadow-xl
+          <section className="relative text-white">
+            <ul className="flex flex-col gap-4">
+              {question.options.map((option, index) => (
+                <li key={index}>
+                  <button
+                    className={`sm:min-w-64 min-w-44 flex bg-[#205D76] 
+                    rounded-full font-extrabold w-full gap-3 h-full p-2 px-3 sm:p-3 shadow-xl
               ${
                 quizState == "started"
-                  ? selectedOption == index
+                  ? question.selectedOptionIndex == index
                     ? "bg-[#FBA43E] active:bg-[#F49E39]"
                     : "hover:bg-[#082E3E] active:bg-[#0D4055]"
                   : question.correctOptionIndex == index
                   ? "bg-green-500"
-                  : selectedOption == index
+                  : question.selectedOptionIndex == index
                   ? "bg-red-500"
                   : ""
               }`}
-                  onClick={() => {
-                    saveSelectedOption({ selectedOptionIndex: index });
-                  }}
-                  disabled={quizState == "review"}
-                >
-                  <div>{`${String.fromCharCode(97 + index)})`}</div>
-                  <div>{option}</div>
-                </button>
-              </li>
-            ))}
-           {quizState=="started"? <button className="absolute -bottom-20 left-[50%] -translate-x-[50%] px-5 py-2 
-            bg-red-600 hover:bg-red-700 active:bg-red-800"
-            onClick={() => {
-              saveSelectedOption({selectedOptionIndex:undefined})
-            }}
-            >Clear</button>:<></>}
-          </ul>
-          {quizState == "review" ? (
-            <p
-              className={`${
-                selectedOption == undefined
-                  ? "text-gray-600"
-                  : selectedOption == question.correctOptionIndex
-                  ? "text-green-500"
-                  : "text-red-500"
+                    onClick={() => {
+                      saveMcqOption({ selectedOptionIndex: index });
+                    }}
+                    disabled={quizState == "review"}
+                  >
+                    <div>{`${String.fromCharCode(97 + index)})`}</div>
+                    <div>{option}</div>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <ClearButton
+              handleClear={() =>
+                saveMcqOption({ selectedOptionIndex: undefined })
               }
-              font-bold top-10 relative sm:text-2xl text-lg`}
-            >
-              {selectedOption != undefined
-                ? "Your answer was " +
-                  (question.correctOptionIndex == selectedOption
-                    ? "correct 🎉"
-                    : "incorrect 😭")
-                : "You did not answer 😒"}
-            </p>
-          ) : (
-            <></>
-          )}
+            />
+          </section>
+
+          <ReviewMessage
+            quizState={quizState as "started" | "review"}
+            question={question}
+          />
         </div>
       </div>
     </Background>
+  );
+}
+
+function ReviewMessage({
+  quizState,
+  question,
+}: {
+  quizState: "started" | "review";
+  question: McqQuestionType;
+}) {
+  return (
+    <>
+      {quizState == "review" ? (
+        <p
+          className={`${
+            question.selectedOptionIndex == undefined
+              ? "text-gray-600"
+              : question.selectedOptionIndex == question.correctOptionIndex
+              ? "text-green-500"
+              : "text-red-500"
+          }
+      font-bold top-10 relative sm:text-2xl text-lg`}
+        >
+          {question.selectedOptionIndex != undefined
+            ? "Your answer was " +
+              (question.correctOptionIndex == question.selectedOptionIndex
+                ? "correct 🎉"
+                : "incorrect 😭")
+            : "You did not answer 😒"}
+        </p>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 

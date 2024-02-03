@@ -65,7 +65,7 @@ function BgImageAndObjects({
         src={bgImage}
         className={`rounded-[40px] z-[-2] h-[90vh] sm:max-w-[85vw] max-w-[95vw] sm:w-[75vw] object-cover`}
       />
-      {screenSize.width > 768 ? (
+      {screenSize.width > 640 ? (
         <div>
 
           <img
@@ -76,7 +76,7 @@ function BgImageAndObjects({
           <img
             draggable={false}
             src={shoeImage}
-            className="absolute top-[50%] translate-y-[-50%] left-32 w-40"
+            className="absolute top-[50%] translate-y-[-50%] left-20 w-40"
           />
           <img
             draggable={false}

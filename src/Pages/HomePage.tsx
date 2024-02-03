@@ -1,34 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useContext,} from "react";
 import Background from "../Background";
 import "../styles1.css";
 import easyImage from "../assets/Group 27.png";
 import hardImage from "../assets/Group 26.png";
 import mediumImage from "../assets/Group 28.png";
 import { getAuth } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { QuizContext } from "../utils/QuizContext";
 
-function HomePage({
-  starQuiz,
-  setLevel,
-  level,
-}: {
-  createQuestions: () => void;
-  starQuiz: () => void;
-  setLevel: React.Dispatch<React.SetStateAction<"easy" | "medium" | "hard">>;
-  level: "easy" | "medium" | "hard";
-}) {
-  const user = getAuth().currentUser;
-  const [name, setName] = useState("");
-  const [classValue, setClassValue] = useState("");
+function HomePage() {
+  const { level, setLevel, startQuiz, name, classValue } =
+    useContext(QuizContext);
 
-  useEffect(() => {
-    const db = getFirestore();
-    const userRef = doc(db, "users", user!.uid);
-    getDoc(userRef).then((data) => {
-      setName(data.data()!.name);
-      setClassValue(data.data()!.classValue);
-    });
-  }, []);
   return (
     <Background>
       <button
@@ -38,16 +20,20 @@ function HomePage({
           getAuth().signOut();
         }}
       >
-        <span className="material-symbols-outlined relative left-[2px] sm:left-0">logout</span>
+        <span className="material-symbols-outlined relative left-[2px] sm:left-0">
+          logout
+        </span>
         {window.innerWidth > 640 ? <p>Signout</p> : <></>}
       </button>
       <div className="w-full h-full flex flex-col justify-around items-center select-text">
         <div className="student-box p-3">
           <h2 className="text-center">STUDENT DETAILS</h2>
-          <h3>Name : <span className={`${name.length>15?"block text-center":""}`}>
-            {name}
+          <h3>
+            Name :{" "}
+            <span className={`${name.length > 15 ? "block text-center" : ""}`}>
+              {name}
             </span>
-            </h3>
+          </h3>
           <h3>Class : {classValue}</h3>
         </div>
         <div className="mainpage flex flex-col gap-10 w-full">
@@ -97,7 +83,7 @@ function HomePage({
         </div>
         <button
           className="start shadow-xl hover:bg-[#4B70BC] active:bg-[#4464A4]"
-          onClick={starQuiz}
+          onClick={startQuiz}
         >
           START QUIZ!
         </button>

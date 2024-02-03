@@ -1,42 +1,32 @@
 import Background from "../Background";
-import { McqQuestionType } from "./Quiz";
 import mascotImage from "../assets/Group 6.png";
 import booksImage from "../assets/image 13.png";
 import smileysImage from "../assets/image 14.png";
 import "../index.css";
-import { useEffect, useState } from "react";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { useContext} from "react";
+import { QuizContext } from "../utils/QuizContext";
 
-function PerformanceDashboard({
-  questions,
-  gotToReview,
-  selectedOptions,
-}: {
-  questions: React.MutableRefObject<McqQuestionType[] | undefined>;
-  gotToReview: () => void;
-  selectedOptions: (number | undefined)[];
-}) {
-  const [name, setName] = useState("");
-  const [claaValue, setClassValue] = useState("");
+function PerformanceDashboard() {
+  const { name, classValue, questions, setQuizState } = useContext(QuizContext);
 
   let totalPercentage =
-    (questions.current!.reduce(
-      (acc, q, index) =>
-        selectedOptions[index] == q.correctOptionIndex ? acc + 1 : acc,
-      0
-    ) /
-      questions.current!.length) *
+    (questions!.reduce((acc, q) => {
+      if (q.type == "mcq") {
+        return q.selectedOptionIndex == q.correctOptionIndex ? acc + 1 : acc;
+      }
+      return 0;
+    }, 0) /
+      questions.length) *
     100;
   let mcqPercentage =
-    (questions.current!.reduce(
-      (acc, q, index) =>
-        q.type == "mcq" && selectedOptions[index] == q.correctOptionIndex
+    (questions.reduce(
+      (acc, q) =>
+        q.type == "mcq" && q.selectedOptionIndex == q.correctOptionIndex
           ? acc + 1
           : acc,
       0
     ) /
-      questions.current!.length) *
+      questions.length) *
     100;
   let fillInTheBlanksPercentage = 0;
   let matchingPercentage = 0;
@@ -54,26 +44,20 @@ function PerformanceDashboard({
       : totalPercentage >= 20
       ? 1
       : 0;
-  useEffect(() => {
-    const db = getFirestore();
-    const userRef = doc(db, "users", getAuth().currentUser!.uid);
-    getDoc(userRef).then((data) => {
-      setName(data.data()!.name);
-      setClassValue(data.data()!.classValue);
-    });
-  }, []);
 
   return (
     <Background>
       <div className="flex justify-around h-full w-full sm:p-7 sm:px-10 p-5 gap-8 flex-col sm:flex-row">
-        <LeftSide name={name} classValue={claaValue} />
+        <LeftSide name={name} classValue={classValue} />
         <RightSide
           fillInTheBlanksPercentage={fillInTheBlanksPercentage}
           matchingPercentage={matchingPercentage}
           mcqPercentage={mcqPercentage}
           totalPercentage={totalPercentage}
           performance={performance}
-          getToReview={gotToReview}
+          getToReview={() => {
+            setQuizState("review");
+          }}
         />
       </div>
     </Background>
@@ -111,7 +95,7 @@ function RightSide({
   mcqPercentage,
   fillInTheBlanksPercentage,
   matchingPercentage,
-  getToReview
+  getToReview,
 }: {
   performance?: number;
   totalPercentage: number;
@@ -139,7 +123,7 @@ function RightSide({
 function YourPerformance({
   performance = 0 | 1 | 2 | 3 | 4,
   totalPercentage,
-  getToReview
+  getToReview,
 }: {
   performance?: number;
   totalPercentage: number;
@@ -148,18 +132,17 @@ function YourPerformance({
   return (
     <div className="bg-[#C8C6AE] rounded-[40px] h-[60%] flex flex-col justify-between items-center sm:p-5 relative">
       <div className="flex flex-col justify-center items-center">
-
-      <button
-        className="bg-blue-800 hover:bg-blue-900 active:bg-blue-950 rounded-xl text-white font-bold
+        <button
+          className="bg-blue-800 hover:bg-blue-900 active:bg-blue-950 rounded-xl text-white font-bold
         sm:absolute top-2 right-5 sm:p-3 p-1"
-        onClick={getToReview}
+          onClick={getToReview}
         >
-        Review
-      </button>
-      <div className="your_performance text-[#205D76] font-bold sm:text-3xl text-2xl text-center">
-        YOUR PERFORMANCE
-      </div>
+          Review
+        </button>
+        <div className="your_performance text-[#205D76] font-bold sm:text-3xl text-2xl text-center">
+          YOUR PERFORMANCE
         </div>
+      </div>
       <p className="sm:text-5xl text-3xl font-extrabold text-[#541039]">
         {totalPercentage}%
       </p>
