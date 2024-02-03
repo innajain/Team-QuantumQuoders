@@ -33,16 +33,14 @@ function FillInTheBlanksQuestion() {
           >
             Enter the correct answer.
           </h1>
-          <section className="flex justify-between sm:w-[550px] w-[90%] text-white h-72">
-            <ul className="flex flex-col h-full justify-between w-[40%]">
+          <section className="flex justify-between sm:w-[600px] w-[90%] text-white h-72 gap-3">
+            <ul className="flex flex-col h-full justify-between w-[50%]">
               {question.subQuestions.map((q, index) => (
                 <li
                 key={index}
-                  className={`relative py-2 px-5 sm:min-w-52 min-w-24 shadow-lg bg-red-600 rounded-full text-center
-                    font-bold sm:text-lg`}
-                    style={{
-                      textWrap: "nowrap",
-                    }}
+                  className={`relative py-2 sm:px-5 sm:min-w-52 max-w-56 shadow-lg bg-red-600 rounded-full text-center
+                    font-bold sm:text-lg text-xs`}
+                  style={{textWrap:"nowrap",}}
                 >
                   {q.question}
                 </li>
@@ -54,7 +52,7 @@ function FillInTheBlanksQuestion() {
                 <input
                 key={index}
                   className={`relative py-2 px-5 sm:min-w-72 shadow-lg bg-yellow-400
-                    text-black font-bold rounded-full text-lg w-full`}
+                    text-black font-bold rounded-full sm:text-lg text-sm w-full`}
                   style={{ letterSpacing: 1 }}
                   onChange={(e) => {
                     setQuestions((prev) => {

@@ -31,7 +31,7 @@ export function QuestionsSection({
           return (
             <button
               key={index}
-              className={`relative py-2 px-5 sm:min-w-40 min-w-24 shadow-lg font-bold`}
+              className={`relative py-2 px-5 sm:min-w-40 max-w-[121.36px] shadow-lg font-bold`}
               style={{ textWrap: "nowrap", backgroundColor: "#"+colors[index] }}
               onClick={() => {
                 if (currSelAns != undefined) {
