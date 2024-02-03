@@ -65,7 +65,7 @@ function PerformanceDashboard({
 
   return (
     <Background>
-      <div className="flex justify-around h-full w-full p-7 px-10 gap-8 flex-col sm:flex-row">
+      <div className="flex justify-around h-full w-full sm:p-7 sm:px-10 p-5 gap-8 flex-col sm:flex-row">
         <LeftSide name={name} classValue={claaValue} />
         <RightSide
           fillInTheBlanksPercentage={fillInTheBlanksPercentage}
