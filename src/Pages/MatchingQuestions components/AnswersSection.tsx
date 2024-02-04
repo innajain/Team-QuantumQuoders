@@ -13,12 +13,11 @@ export function AnswersSection({
   currSelAns: number | undefined;
   setCurrSelQues: (index: number | undefined) => void;
 }) {
-  const { currentQuestionIndex, questions, matchOption,level } =
+  const { currentQuestionIndex, questions, matchOption, level, quizState } =
     useContext(QuizContext)!;
   const question = questions[currentQuestionIndex] as MatchingQuestionType;
   const colors = ["FF598F", "E9ED0B", "00BFAF", "E74B4E"];
-
-
+  console.log(question);
   return (
     <section className="flex flex-col items-center gap-5">
       <h3
@@ -29,15 +28,25 @@ export function AnswersSection({
       </h3>
       <ul className="flex flex-col h-full justify-between">
         {question.subQuestions.map((_, index) => {
-          const matchingQuestionIndex = question.subQuestions.findIndex((qq) => {
-            return qq.selectedAnswerIndex == index;
-          });
+          const matchingQuestionIndex = question.subQuestions.findIndex(
+            (qq) => {
+              if (quizState == "review") {
+                return qq.correctOptionIndex == index;
+              }
+              return qq.selectedAnswerIndex == index;
+            }
+          );
           return (
             <button
               key={index}
-              className={`relative py-2 sm:min-w-40 w-[117px] shadow-lg font-bold text-xs sm:text-base ${level=="hard"?"text-[10px] sm:text-sm":""}`}
+              className={`relative py-2 sm:min-w-40 w-[117px] shadow-lg font-bold text-xs sm:text-base flex items-center justify-center ${
+                level == "hard" ? "text-[10px] sm:text-sm" : ""
+              }`}
               style={{
-                backgroundColor: matchingQuestionIndex == -1 ? "rgb(107 114 128)": "#"+colors[matchingQuestionIndex],
+                backgroundColor:
+                  matchingQuestionIndex == -1
+                    ? "rgb(107 114 128)"
+                    : "#" + colors[matchingQuestionIndex],
               }}
               onClick={() => {
                 if (currSelQues != undefined) {
@@ -53,12 +62,22 @@ export function AnswersSection({
               }}
             >
               {
-                question.subQuestions.find((qq) => qq.correctOptionIndex == index)!
-                  .answer
+                question.subQuestions.find(
+                  (qq) => qq.correctOptionIndex == index
+                )!.answer
               }
-              {currSelAns == index && (
-                <div className="absolute w-[120%] h-[150%] bg-gray-500 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 
-                bg-opacity-50 rounded-xl"></div>
+              {quizState == "review" &&
+                question.subQuestions[matchingQuestionIndex]
+                  .selectedAnswerIndex == index && (
+                  <span className="material-symbols-outlined rounded-full bg-green-400 absolute right-5">
+                    done
+                  </span>
+                )}
+              {currSelAns == index && quizState != "review" && (
+                <div
+                  className="absolute w-[120%] h-[150%] bg-gray-500 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 
+                bg-opacity-50 rounded-xl"
+                ></div>
               )}
             </button>
           );

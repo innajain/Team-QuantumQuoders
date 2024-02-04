@@ -19,34 +19,75 @@ function MatchingQuestion() {
   const topDistance = 60;
   const intervalDistance = 68;
   const colors = ["FF598F", "E9ED0B", "00BFAF", "E74B4E"];
-  const angles = window.innerWidth>460?[0, 31, 50, 60.5]:[0, 49, 67, 74.5];
-  const lengths = window.innerWidth>460?[120, 140, 177, 233]:[55, 93, 145, 210];
+  const angles =
+    window.innerWidth > 460 ? [0, 31, 50, 60.5] : [0, 49, 67, 74.5];
+  const lengths =
+    window.innerWidth > 460 ? [120, 140, 177, 233] : [55, 93, 145, 210];
   const topDistances = [63, 132, 200, 268];
   const leftDistances = [13, 13, 13, 14];
-  const lines = (
-    questions[currentQuestionIndex] as MatchingQuestionType
-  ).subQuestions
-    .map((q, index) => {
-      if (q.selectedAnswerIndex == undefined) {
-        return undefined;
-      }
-      return {
-        top: topDistances[index],
-        left: leftDistances[Math.abs(q.selectedAnswerIndex - index)],
-        length: lengths[Math.abs(q.selectedAnswerIndex - index)],
-        angle:
-          angles[Math.abs(q.selectedAnswerIndex - index)] *
-          (-1) ** (q.selectedAnswerIndex <= index ? 1 : 0),
-        color: colors[index],
-      };
-    })
-    .filter((line) => line != undefined) as {
+  let attemptedLines:{
     top: number;
     left: number;
     length: number;
     angle: number;
     color: string;
   }[];
+  let correctLines:{
+    top: number;
+    left: number;
+    length: number;
+    angle: number;
+    color: string;
+  }[]=[];
+    attemptedLines = (
+      questions[currentQuestionIndex] as MatchingQuestionType
+    ).subQuestions
+      .map((q, index) => {
+        if (q.selectedAnswerIndex == undefined) {
+          return undefined;
+        }
+        return {
+          top: topDistances[index],
+          left: leftDistances[Math.abs(q.selectedAnswerIndex - index)],
+          length: lengths[Math.abs(q.selectedAnswerIndex - index)],
+          angle:
+            angles[Math.abs(q.selectedAnswerIndex - index)] *
+            (-1) ** (q.selectedAnswerIndex <= index ? 1 : 0),
+          color: quizState!="review"?colors[index]:"999999",
+        };
+      })
+      .filter((line) => line != undefined) as {
+      top: number;
+      left: number;
+      length: number;
+      angle: number;
+      color: string;
+    }[];
+  if (quizState == "review") {
+    correctLines = (
+      questions[currentQuestionIndex] as MatchingQuestionType
+    ).subQuestions
+      .map((q, index) => {
+        return {
+          top: topDistances[index],
+          left: leftDistances[Math.abs(q.correctOptionIndex - index)],
+          length: lengths[Math.abs(q.correctOptionIndex - index)],
+          angle:
+            angles[Math.abs(q.correctOptionIndex - index)] *
+            (-1) ** (q.correctOptionIndex <= index ? 1 : 0),
+          color: colors[index],
+        };
+      })
+      .filter((line) => line != undefined) as {
+      top: number;
+      left: number;
+      length: number;
+      angle: number;
+      color: string;
+    }[];
+  }
+
+
 
   return (
     <Background>
@@ -77,9 +118,9 @@ function MatchingQuestion() {
               currSelQues={currSelQues}
             />
             <div className="w-full relative" ref={drawingAreaRef}>
-              {lines.map((line) => (
+              {attemptedLines.map((line, index) => (
                 <div
-                  key={line.color}
+                  key={index}
                   style={{
                     position: "absolute",
                     height: 4,
@@ -92,6 +133,22 @@ function MatchingQuestion() {
                   }}
                 ></div>
               ))}
+              {quizState == "review" &&
+                correctLines.map((line, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      position: "absolute",
+                      height: 4,
+                      width: line.length,
+                      backgroundColor: "#" + line.color,
+                      transform: `rotate(${line.angle}deg)`,
+                      transformOrigin: "0 0",
+                      top: line.top,
+                      left: line.left,
+                    }}
+                  ></div>
+                ))}
               {Array.from({ length: 4 }).map((_, index) => (
                 <div
                   className="rounded-full bg-[#E9ED0B] w-3 aspect-square absolute 

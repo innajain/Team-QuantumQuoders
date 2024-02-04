@@ -9,6 +9,7 @@ export function NavigationButtons() {
     goToPreviousQuestion,
     quizState,
     goToHomePage,
+    setQuizState,
   } = useContext(QuizContext)!;
 const totalQuestions = questions.length;
   return (
@@ -30,7 +31,7 @@ const totalQuestions = questions.length;
       ) : (
         <button
           className={`absolute top-10 right-[10%] min-w-[15%] text-center text-white 
-          font-extrabold md:text-2xl p-1 px-3 shadow-xl bg-green-500 hover:bg-[#56a44d]`}
+          font-extrabold md:text-2xl p-1 px-3 shadow-xl bg-green-500 hover:bg-[#56a44d] z-50`}
           onClick={() => {
             goToHomePage();
           }}
@@ -53,9 +54,19 @@ const totalQuestions = questions.length;
         >
           Previous
         </button>
-      ) : (
-        <></>
-      )}
+      ) : quizState=="review"?(
+        <>
+        <button
+          className={`absolute top-10 left-[10%] min-w-[15%] text-center text-white 
+          font-extrabold md:text-2xl p-1 px-3 shadow-xl hover:bg-[#123C91] bg-[#5682DB]`}
+          onClick={() => {
+            setQuizState("performance-dashboard");
+          }}
+        >
+          Go back
+        </button>
+        </>
+      ):<></>}
     </>
   );
 }

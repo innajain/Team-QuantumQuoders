@@ -13,7 +13,7 @@ export function QuestionsSection({
   setCurrSelAns: React.Dispatch<React.SetStateAction<number | undefined>>;
   currSelQues: number | undefined;
 }) {
-  const { currentQuestionIndex, questions, matchOption, level } =
+  const { currentQuestionIndex, questions, matchOption, level, quizState } =
     useContext(QuizContext)!;
   const question = questions[currentQuestionIndex] as MatchingQuestionType;
   const colors = ["FF598F", "E9ED0B", "00BFAF", "E74B4E"];
@@ -47,7 +47,7 @@ export function QuestionsSection({
               }}
             >
               {q.question}
-              {currSelQues == index && (
+              {currSelQues == index && quizState!="review"&& (
                 <div
                   className="absolute w-[120%] h-[150%] bg-gray-500 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 
                 bg-opacity-50 rounded-xl"
