@@ -16,7 +16,11 @@ Hosted at: https://team-quantumquoders.vercel.app/ (main branch)
 <div style="display: flex; gap=10px;">
   <img src="./public/Screenshot_20240201-230410.jpg" width="18%">
   <img src="./public/Screenshot_20240201-230338.jpg" width="18%">
-  <img src="./public/Screenshot_20240201-225710~2.jpg" width="18%">
+  <img src="./public/Screenshot_20240204-222709~2.jpg" width="18%">
   <img src="./public/Screenshot_20240201-230054~2.jpg" width="18%">
   <img src="./public/Screenshot_20240201-230059~2.jpg" width="18%">
+  <img src="./public/Screenshot_20240204-222733~2.jpg" width="18%">
+  <img src="./public/Screenshot_20240204-223259~2.jpg" width="18%">
+  <img src="./public/Screenshot_20240204-223328~2.jpg" width="18%">
+  <img src="./public/Screenshot_20240204-223700~2.jpg" width="18%">
 </div>
