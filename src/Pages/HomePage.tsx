@@ -87,9 +87,9 @@ function HomePage() {
               <p className="text-lg sm:text-2xl px-4 bg-[#E74B4E]">hard</p>
             </button>
           </section>
-          <section className="flex justify-between sm:gap-10 gap-2 w-[80%] md:w-[60%]">
+          <section className="flex justify-between sm:gap-10 gap-2 w-[90%] md:w-[60%] overflow-hidden">
             <select
-              className="bg-[#45938A]"
+              className="bg-[#45938A] w-1/3"
               value={quizStructure.mcq}
               onChange={(e) => {
                 setQuizStructure({
@@ -105,7 +105,7 @@ function HomePage() {
               ))}
             </select>
             <select
-              className="bg-[#45938A]"
+              className="bg-[#45938A] w-1/3"
               value={quizStructure.matching}
               onChange={(e) => {
                 setQuizStructure({
@@ -114,7 +114,6 @@ function HomePage() {
                 });
               }}
             >
-              {" "}
               {Array.from({ length: 11 }, (_, i) => (
                 <option key={i} value={i}>
                   Matching: {i} Qs
@@ -122,7 +121,7 @@ function HomePage() {
               ))}
             </select>
             <select
-              className="bg-[#45938A]"
+              className="bg-[#45938A] w-1/3"
               value={quizStructure.fill}
               onChange={(e) => {
                 setQuizStructure({
@@ -131,7 +130,6 @@ function HomePage() {
                 });
               }}
             >
-              {" "}
               {Array.from({ length: 11 }, (_, i) => (
                 <option key={i} value={i}>
                   Filling: {i} Qs

@@ -18,8 +18,8 @@ function MatchingQuestion() {
   const topDistance = 60;
   const intervalDistance = 68;
   const colors = ["FF598F", "E9ED0B", "00BFAF", "E74B4E"];
-  const angles = window.innerWidth>460?[0, 31, 50, 60.5]:[0, 50, 67, 74.5];
-  const lengths = window.innerWidth>460?[120, 140, 177, 230]:[55, 88, 145, 210];
+  const angles = window.innerWidth>460?[0, 31, 50, 60.5]:[0, 49, 67, 74.5];
+  const lengths = window.innerWidth>460?[120, 140, 177, 233]:[55, 93, 145, 210];
   const topDistances = [63, 132, 200, 268];
   const leftDistances = [13, 13, 13, 14];
   const lines = (
@@ -63,12 +63,12 @@ function MatchingQuestion() {
             Question ({currentQuestionIndex + 1}/{totalQuestions})
           </span>
           <h1
-            className="font-[1000] sm:text-4xl text-2xl text-[#1E1E1E] my-10 text-center"
+            className="font-[1000] sm:text-4xl text-2xl text-[#1E1E1E] my-5 text-center"
             style={{ textShadow: "1px 0 #1E1E1E" }}
           >
             Match the correct options
           </h1>
-          <section className="flex justify-between w-[340px] sm:w-[465px] text-white h-72">
+          <section className="flex justify-between w-[320px] sm:w-[465px] text-white h-72">
             <QuestionsSection
               currSelAns={currSelAns}
               setCurrSelAns={setCurrSelAns}

@@ -13,7 +13,7 @@ export function QuestionsSection({
   setCurrSelAns: React.Dispatch<React.SetStateAction<number | undefined>>;
   currSelQues: number | undefined;
 }) {
-  const { currentQuestionIndex, questions, matchOption } =
+  const { currentQuestionIndex, questions, matchOption, level } =
     useContext(QuizContext)!;
   const question = questions[currentQuestionIndex] as MatchingQuestionType;
   const colors = ["FF598F", "E9ED0B", "00BFAF", "E74B4E"];
@@ -31,7 +31,7 @@ export function QuestionsSection({
           return (
             <button
               key={index}
-              className={`relative py-2 px-5 sm:min-w-40 max-w-[121.36px] shadow-lg font-bold`}
+              className={`relative py-2 sm:min-w-40 w-[117px] shadow-lg font-bold text-xs sm:text-base ${level=="hard"?"text-[10px] sm:text-sm":""}`}
               style={{ textWrap: "nowrap", backgroundColor: "#"+colors[index] }}
               onClick={() => {
                 if (currSelAns != undefined) {

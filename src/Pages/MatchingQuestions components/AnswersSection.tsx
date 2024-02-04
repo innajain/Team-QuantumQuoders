@@ -13,7 +13,7 @@ export function AnswersSection({
   currSelAns: number | undefined;
   setCurrSelQues: (index: number | undefined) => void;
 }) {
-  const { currentQuestionIndex, questions, matchOption } =
+  const { currentQuestionIndex, questions, matchOption,level } =
     useContext(QuizContext)!;
   const question = questions[currentQuestionIndex] as MatchingQuestionType;
   const colors = ["FF598F", "E9ED0B", "00BFAF", "E74B4E"];
@@ -35,7 +35,7 @@ export function AnswersSection({
           return (
             <button
               key={index}
-              className={`relative py-2 px-5 sm:min-w-40 min-w-32 font-bold`}
+              className={`relative py-2 sm:min-w-40 w-[117px] shadow-lg font-bold text-xs sm:text-base ${level=="hard"?"text-[10px] sm:text-sm":""}`}
               style={{
                 backgroundColor: matchingQuestionIndex == -1 ? "rgb(107 114 128)": "#"+colors[matchingQuestionIndex],
               }}

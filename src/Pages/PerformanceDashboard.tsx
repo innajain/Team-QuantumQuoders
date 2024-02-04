@@ -9,50 +9,51 @@ import { QuizContext } from "../utils/QuizContext";
 function PerformanceDashboard() {
   const { name, classValue, questions, setQuizState } = useContext(QuizContext)!;
 
-  let totalPercentage =
-    (questions!.reduce((acc, q) => {
-      if (q.type == "mcq") {
-        return q.selectedOptionIndex == q.correctOptionIndex ? acc + 1 : acc;
+  let totalPercentage=0
+  let totalQuestions=0
+  let mcqPercentage=0
+  let mcqQuestions=0
+  let matchingPercentage=0
+  let matchingQuestions=0
+  let fillInTheBlanksPercentage=0
+  let fillInTheBlanksQuestions=0
+
+  questions.forEach((q) => {
+    if (q.type === "mcq") {
+      mcqQuestions+=1
+      totalQuestions+=1
+      if (q.selectedOptionIndex==q.correctOptionIndex) {
+        mcqPercentage += 1;
+        totalPercentage += 1;
       }
-      return 0;
-    }, 0) /
-      questions.length) *
-    100;
-  let mcqPercentage =
-    (questions.reduce(
-      (acc, q) =>
-        q.type == "mcq" && q.selectedOptionIndex == q.correctOptionIndex
-          ? acc + 1
-          : acc,
-      0
-    ) /
-    questions.filter(q=>q.type=="mcq").length) *
-    100;
-  let fillInTheBlanksPercentage =
-    (questions.reduce(
-      (acc, q) =>
-        q.type == "fill" &&
-        q.subQuestions.some((qq) => qq.enteredAnswer != qq.correctAnswer) ==
-          false
-          ? acc + 1
-          : acc,
-      0
-    ) /
-    questions.filter(q=>q.type=="fill").length) *
-    100;
-  let matchingPercentage =
-    (questions.reduce(
-      (acc, q) =>
-        q.type == "matching" &&
-        q.subQuestions.some(
-          (qq) => qq.selectedAnswerIndex != qq.correctOptionIndex
-        ) == false
-          ? acc + 1
-          : acc,
-      0
-    ) /
-      questions.filter(q=>q.type=="matching").length) *
-    100;
+    } else if (q.type === "matching") {
+
+      q.subQuestions.forEach((subQ) => {
+        matchingQuestions+=1
+        totalQuestions+=1
+
+        if (subQ.selectedAnswerIndex==subQ.correctOptionIndex) {
+          matchingPercentage += 1;
+          totalPercentage += 1;
+        }
+      });
+    } else if (q.type === "fill") {
+      q.subQuestions.forEach((subQ) => {
+        fillInTheBlanksQuestions+=1
+        totalQuestions+=1
+        if (subQ.correctAnswer==subQ.enteredAnswer) {
+          fillInTheBlanksPercentage += 1;
+          totalPercentage += 1;
+        }
+      })
+    }
+  });
+
+  mcqPercentage = mcqQuestions==0?0:mcqPercentage/mcqQuestions*100
+  matchingPercentage = matchingPercentage==0?0:matchingPercentage/matchingQuestions*100
+  fillInTheBlanksPercentage = fillInTheBlanksPercentage==0?0:fillInTheBlanksPercentage/fillInTheBlanksQuestions*100
+  totalPercentage = totalPercentage/totalQuestions*100
+
   if (totalPercentage % 1 != 0)
     totalPercentage = parseFloat(totalPercentage.toFixed(2));
   if (mcqPercentage % 1 != 0)
@@ -161,7 +162,7 @@ function YourPerformance({
       <div className="flex flex-col justify-center items-center">
         <button
           className="bg-blue-800 hover:bg-blue-900 active:bg-blue-950 rounded-xl text-white font-bold
-        sm:absolute top-2 right-5 sm:p-3 p-1"
+        sm:absolute top-2 right-5 sm:p-3 p-1 px-2"
           onClick={getToReview}
         >
           Review
