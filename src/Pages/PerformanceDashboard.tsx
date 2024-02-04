@@ -105,8 +105,11 @@ function LeftSide({ name, classValue }: { name: string; classValue: string }) {
       <br />
       <section className="text-white font-bold lg:text-3xl md:text-xl">
         <p className="student-info mb-5 text-center">STUDENT INFO</p>
+        <section className="flex flex-col gap-3">
+
         <p className="info">Name: {name}</p>
         <p>Class: {classValue}</p>
+        </section>
       </section>
       {window.innerWidth > 640 ? (
         <img src={booksImage} className="books-image" />
