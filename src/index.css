@@ -39,6 +39,7 @@ form {
 }
 
 input, select {
+    cursor: text;
     width: 278.832px;
     height: 37.178px;
     border: none;

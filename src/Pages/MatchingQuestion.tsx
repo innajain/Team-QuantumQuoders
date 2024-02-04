@@ -9,9 +9,10 @@ import { QuizContext } from "../utils/QuizContext";
 import { MatchingQuestionType } from "../utils/quiz";
 
 function MatchingQuestion() {
-  const { currentQuestionIndex, questions, setQuestions } =
+  const { currentQuestionIndex, questions, setQuestions, quizState } =
     useContext(QuizContext)!;
   const totalQuestions = questions.length;
+  const question = questions[currentQuestionIndex] as MatchingQuestionType;
   const [currSelQues, setCurrSelQues] = useState<number | undefined>(undefined);
   const [currSelAns, setCurrSelAns] = useState<number | undefined>(undefined);
   const drawingAreaRef = useRef<HTMLDivElement>(null);
@@ -133,9 +134,58 @@ function MatchingQuestion() {
               setCurrSelQues(undefined);
             }}
           />
+          <ReviewMessage
+            quizState={quizState as "started" | "review"}
+            question={question}
+          />
         </div>
       </div>
     </Background>
+  );
+}
+
+function ReviewMessage({
+  quizState,
+  question,
+}: {
+  quizState: "started" | "review";
+  question: MatchingQuestionType;
+}) {
+  const answeredCorrectly = question.subQuestions.reduce((acc, curr) => {
+    return curr.selectedAnswerIndex == curr.correctOptionIndex ? acc + 1 : acc;
+  }, 0);
+  const attempted = question.subQuestions.reduce((acc, curr) => {
+    return curr.selectedAnswerIndex == undefined ? acc : acc + 1;
+  }, 0);
+  return (
+    <>
+      {quizState == "review" ? (
+        <p
+          className={`${
+            attempted == 0
+              ? "text-gray-600"
+              : answeredCorrectly == 4
+              ? "text-green-500"
+              : answeredCorrectly > 0
+              ? "text-orange-500"
+              : "text-red-500"
+          }
+      font-bold top-10 relative sm:text-2xl text-lg`}
+        >
+          {attempted == 0
+            ? "You didn't attempt any question 😒"
+            : answeredCorrectly == 4
+            ? "All answers were correct 🎉"
+            : answeredCorrectly == 1
+            ? "You answered 1 question correctly 😊"
+            : answeredCorrectly > 0
+            ? `You answered ${answeredCorrectly} questions correctly 😊`
+            : "No answers were correct 😭"}
+        </p>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 

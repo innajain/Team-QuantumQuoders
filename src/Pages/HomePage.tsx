@@ -1,3 +1,4 @@
+
 import { useContext } from "react";
 import Background from "../Background";
 import "../styles1.css";
@@ -132,7 +133,7 @@ function HomePage() {
             >
               {Array.from({ length: 11 }, (_, i) => (
                 <option key={i} value={i}>
-                  Filling: {i} Qs
+                  Fill: {i} Qs
                 </option>
               ))}
             </select>

@@ -37,7 +37,7 @@ export type FillInTheBlanksQuestionType = {
   subQuestions: {
     question: string;
     correctAnswer: string;
-    enteredAnswer?: string;
+    enteredAnswer: string;
   }[];
 };
 
@@ -76,15 +76,15 @@ export function getNewMatchingQuestion(
   level: "easy" | "medium" | "hard"
 ): MatchingQuestionType {
   let questions: MatchingQuestionType["subQuestions"] = [];
-  for (let i = 0; i < 4; i++) {
+  while (questions.length < 4) {
     const randomNum1 = Math.random();
     const randomNum2 = Math.random();
-    const num1 = Math.floor(
+    let num1 = Math.floor(
       randomNum1 *
       10 ** (level == "easy" ? 1 : level == "medium" ? 2 : 3) *
       (-1) ** (level == "hard" ? (randomNum1 > 0.5 ? 1 : 0) : 0)
     );
-    const num2 = Math.floor(
+    let num2 = Math.floor(
       randomNum2 *
       10 ** (level == "easy" ? 1 : level == "medium" ? 2 : 3) *
       (-1) ** (level == "hard" ? (randomNum2 > 0.5 ? 1 : 0) : 0)
@@ -102,11 +102,22 @@ export function getNewMatchingQuestion(
         : randomNum1 > 0.25
         ? "+"
         : "-";
+
+    if (level=="easy"&&operation=="-"){
+      let temp = Math.max(num1,num2)
+      num2 = Math.min(num1,num2)
+      num1 = temp
+    }
+
     let answer = eval(`${num1} ${operation} ${num2}`);
     if (answer % 1 != 0) {
       answer = parseFloat(answer.toFixed(2));
     }
 
+    if (questions.some((item) => item.answer == answer)) {
+      continue;
+    }
+  
     let correctOptionIndex = Math.floor(Math.random() * 4);
     while (
       questions.some((item) => item.correctOptionIndex == correctOptionIndex)
@@ -156,12 +167,12 @@ export function getNewFillInTheBlanksQuestion(
   for (let i = 0; i < 4; i++) {
     const randomNum1 = Math.random();
     const randomNum2 = Math.random();
-    const num1 = Math.floor(
+    let num1 = Math.floor(
       randomNum1 *
         10 ** (level == "easy" ? 1 : level == "medium" ? 2 : 3) *
         (-1) ** (level == "hard" ? (randomNum2 > 0.5 ? 1 : 0) : 0)
     );
-    const num2 = Math.floor(
+    let num2 = Math.floor(
       randomNum2 *
       10 ** (level == "easy" ? 1 : level == "medium" ? 2 : 3) *
       (-1) ** (level == "hard" ? (randomNum2 > 0.5 ? 1 : 0) : 0)
@@ -180,6 +191,12 @@ export function getNewFillInTheBlanksQuestion(
         ? "+"
         : "-";
 
+        if (level=="easy"&&operation=="-"){
+          let temp = Math.max(num1,num2)
+          num2 = Math.min(num1,num2)
+          num1 = temp
+        }
+
     let num1String = num1.toString();
     if (num1 < 0) {
       num1String = `(${num1String})`;
@@ -196,6 +213,7 @@ export function getNewFillInTheBlanksQuestion(
     questions.push({
       question: `${num1String} ${operation} ${num2String} = ?`,
       correctAnswer: answer.toString(),
+      enteredAnswer: "",
     });
   }
 

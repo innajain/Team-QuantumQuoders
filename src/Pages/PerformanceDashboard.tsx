@@ -103,7 +103,7 @@ function LeftSide({ name, classValue }: { name: string; classValue: string }) {
         className="bear_image sm:w-[50%] h-2/3 sm:h-max aspect-square justify-between "
       />
       <br />
-      <section className="text-white font-bold md:text-3xl ">
+      <section className="text-white font-bold lg:text-3xl md:text-xl">
         <p className="student-info mb-5 text-center">STUDENT INFO</p>
         <p className="info">Name: {name}</p>
         <p>Class: {classValue}</p>
