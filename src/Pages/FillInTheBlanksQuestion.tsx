@@ -39,7 +39,7 @@ function FillInTheBlanksQuestion() {
                 <li
                   key={index}
                   className={`relative py-2 sm:px-5 sm:min-w-52 max-w-56 shadow-lg bg-red-600 rounded-full text-center
-                    font-bold sm:text-lg text-xs h-full`}
+                    font-bold sm:text-lg text-xs h-full flex flex-col items-center justify-center`}
                   style={{ textWrap: "nowrap" }}
                 >
                   {q.question}
