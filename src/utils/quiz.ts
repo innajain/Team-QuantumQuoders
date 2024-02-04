@@ -81,13 +81,13 @@ export function getNewMatchingQuestion(
     const randomNum2 = Math.random();
     const num1 = Math.floor(
       randomNum1 *
-        10 ** (level == "easy" ? 2 : level == "medium" ? 3 : 4) *
-        (-1) ** (level == "hard" ? (randomNum1 > 0.5 ? 1 : 0) : 0)
+      10 ** (level == "easy" ? 1 : level == "medium" ? 2 : 3) *
+      (-1) ** (level == "hard" ? (randomNum1 > 0.5 ? 1 : 0) : 0)
     );
     const num2 = Math.floor(
       randomNum2 *
-        10 ** (level == "easy" ? 2 : level == "medium" ? 3 : 4) *
-        (-1) ** (level == "hard" ? (randomNum2 > 0.5 ? 1 : 0) : 0)
+      10 ** (level == "easy" ? 1 : level == "medium" ? 2 : 3) *
+      (-1) ** (level == "hard" ? (randomNum2 > 0.5 ? 1 : 0) : 0)
     );
 
     const operation =
