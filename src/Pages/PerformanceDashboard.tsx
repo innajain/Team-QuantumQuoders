@@ -158,7 +158,7 @@ function YourPerformance({
   getToReview: () => void;
 }) {
   return (
-    <div className="bg-[#C8C6AE] rounded-[40px] h-[60%] flex flex-col justify-between items-center sm:p-5 relative">
+    <div className="bg-[#C8C6AE] rounded-[40px] h-[60%] flex flex-col justify-between items-center sm:p-5 relative overflow-hidden">
       <div className="flex flex-col justify-center items-center">
         <button
           className="bg-blue-800 hover:bg-blue-900 active:bg-blue-950 rounded-xl text-white font-bold
@@ -174,8 +174,8 @@ function YourPerformance({
       <p className="sm:text-5xl text-3xl font-extrabold text-[#541039]">
         {totalPercentage}%
       </p>
-      <div className="relative sm:w-full w-[120%]">
-        <img src={smileysImage} className="w-full" />
+      <div className="relative sm:w-full w-[100%]">
+        <img src={smileysImage} className="w-full mb-45" />
         <div
           className="bg-gray-600 bg-opacity-40 h-full w-[17%] absolute top-0 rounded-xl"
           style={{ left: 8.5 + performance * 16.5 + "%" }}
